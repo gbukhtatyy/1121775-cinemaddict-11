@@ -1,7 +1,7 @@
 # Личный проект «Киноман» [![Build status][travis-image]][travis-url]
 
 * Студент: [Бухтатый Георгий](https://up.htmlacademy.ru/ecmascript/11/user/1121775).
-* Наставник: `Неизвестно`.
+* Наставник: [Александр Белокур](https://htmlacademy.ru/profile/id256757).
 
 ---
 
