@@ -1,9 +1,19 @@
-export const createSortingTemplate = () => {
+const createSortingMarkup = (sorting, isChecked) => {
+  const {code, title} = sorting;
+
+  const checkedClass = isChecked ? `sort__button--active` : ``;
+
+  return (
+    `<li><a href="#" class="sort__button ${checkedClass}" data-sort-type="${code}">${title}</a></li>`
+  );
+};
+
+export const createSortingTemplate = (sortings) => {
+  const sortingsMarkup = sortings.map((it, i) => createSortingMarkup(it, i === 0)).join(`\n`);
+
   return (
     `<ul class="sort">
-          <li><a href="#" class="sort__button sort__button--active">Sort by default</a></li>
-          <li><a href="#" class="sort__button">Sort by date</a></li>
-          <li><a href="#" class="sort__button">Sort by rating</a></li>
+      ${sortingsMarkup}
       </ul>`
   );
 };
