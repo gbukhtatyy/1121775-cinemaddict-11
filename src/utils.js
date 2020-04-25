@@ -1,9 +1,54 @@
+export const RenderPosition = {
+  AFTERBEGIN: `afterbegin`,
+  BEFOREEND: `beforeend`
+};
+
 /**
-* Получение случайного числа в заданном диапозоне
-*
-* @param {number} max максимальное значение
-* @param {number} min минимальное значение
-* @return {number} случайное значение в заданных диапозонах
+ * Create a Dom Element Based on a Template
+ * @param {String} template
+ * @return {Element}
+ */
+export const createElement = (template) => {
+  const newElement = document.createElement(`div`);
+  newElement.innerHTML = template;
+
+  return newElement.firstChild;
+};
+
+/**
+ * Rendering element to container
+ * @param {Element} container
+ * @param {Element} element
+ * @param {string} place
+ */
+export const render = (container, element, place) => {
+  switch (place) {
+    case RenderPosition.AFTERBEGIN:
+      container.prepend(element);
+      break;
+    case RenderPosition.BEFOREEND:
+      container.append(element);
+      break;
+  }
+};
+
+/**
+ * Format count minutes to "xh xm"
+ * @param {Number} totalMinutes
+ * @return {String} 1h 25m
+ */
+export const generateLengthMarkup = (totalMinutes) => {
+  const hours = Math.floor(totalMinutes / 60);
+  const minutes = totalMinutes % 60;
+
+  return `${hours}h ${minutes}m`;
+};
+
+/**
+* Getting a random number in a given range
+* @param {number} max maximum value
+* @param {number} min minimum value
+* @return {number} random value in given range
 */
 export const getRandomInt = (max, min) => {
   max = max ? max : 2;
@@ -13,18 +58,18 @@ export const getRandomInt = (max, min) => {
 };
 
 /**
- * Получение случайного элемента из массива
+ * Getting a random element from an array
  * @param {Array} array
- * @return {*} случайных элемент массива
+ * @return {*} random element
  */
 export const getRandomElementArray = (array) => {
   return array[getRandomInt(array.length)];
 };
 
 /**
- * Получение перемешанного массива
- * @param {Array} array исходный массив
- * @return {Array} перемешанный массив
+ * Getting a mixed array
+ * @param {Array} array source array
+ * @return {Array} mixed array
  */
 export const shuffleArray = (array) => {
   return array.slice(0).sort(function () {
@@ -33,10 +78,10 @@ export const shuffleArray = (array) => {
 };
 
 /**
- * Получение amount случайных элементов из массива array
- * @param {Array} array исходный массив
- * @param {number} amount кол-во случайных элементов
- * @return {Array} массив случайных элементов из массива array
+ * Getting amount of random elements from array
+ * @param {Array} array source array
+ * @param {number} amount number of random elements
+ * @return {Array} array of random elements from an array
  */
 export const getRandomElementsArray = (array, amount) => {
   amount = amount ? amount : 1;

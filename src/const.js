@@ -1,4 +1,4 @@
-export const SORTINGS = [
+export const SORT_ITEMS = [
   {
     code: `default`,
     title: `Sort by default`
