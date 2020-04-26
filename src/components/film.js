@@ -1,11 +1,6 @@
-export const generateLengthMarkup = (totalMinutes) => {
-  const hours = Math.floor(totalMinutes / 60);
-  const minutes = totalMinutes % 60;
+import {createElement, generateLengthMarkup} from "../utils.js";
 
-  return `${hours}h ${minutes}m`;
-};
-
-export const createFilmTemplate = (film) => {
+const createFilmTemplate = (film) => {
   const {poster, title, rating, year, minutes, category, description, comments} = film;
 
   const length = generateLengthMarkup(minutes);
@@ -31,3 +26,27 @@ export const createFilmTemplate = (film) => {
       </article>`
   );
 };
+
+export default class Film {
+  constructor(film) {
+    this._film = film;
+
+    this._element = null;
+  }
+
+  getTemplate() {
+    return createFilmTemplate(this._film);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}

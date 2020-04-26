@@ -1,4 +1,4 @@
-import {generateLengthMarkup} from "./film.js";
+import {createElement, generateLengthMarkup} from "../utils.js";
 
 const createCommentMarkup = (comment) => {
   const {author, content, emoji} = comment;
@@ -19,7 +19,7 @@ const createCommentMarkup = (comment) => {
   );
 };
 
-export const createFilmPopupTemplate = (film) => {
+const createFilmPopupTemplate = (film) => {
   const {poster, title, rating, minutes, description, comments} = film;
 
   const length = generateLengthMarkup(minutes);
@@ -148,3 +148,27 @@ export const createFilmPopupTemplate = (film) => {
       </section>`
   );
 };
+
+export default class FilmPopup {
+  constructor(film) {
+    this._film = film;
+
+    this._element = null;
+  }
+
+  getTemplate() {
+    return createFilmPopupTemplate(this._film);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}
