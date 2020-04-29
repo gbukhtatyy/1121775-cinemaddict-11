@@ -5,7 +5,7 @@ import SiteStatisticComponent from "./components/site-statistic.js";
 import BoardComponent from "./components/board.js";
 
 // Import controllers
-import BoardController from "./controllers/board.js";
+import PageController from "./controllers/page.js";
 
 // Import constants and utils
 import {RenderPosition, render} from "./utils/render.js";
@@ -31,6 +31,6 @@ render(siteMainElement, new SiteMenuComponent(), RenderPosition.BEFOREEND);
 render(siteFooterElement, new SiteStatisticComponent(STATISTIC_NUMBER), RenderPosition.BEFOREEND);
 
 const boardComponent = new BoardComponent();
-const boardController = new BoardController(boardComponent);
+const boardController = new PageController(boardComponent);
 render(siteMainElement, boardComponent, RenderPosition.BEFOREEND);
 boardController.render(films);
