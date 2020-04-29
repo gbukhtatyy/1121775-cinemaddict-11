@@ -1,4 +1,5 @@
-import {createElement} from "../utils.js";
+import AbstractComponent from "./abstract-component.js";
+import {SITE_MENU_ITEMS, SITE_MENU_ADDITIONAL_ITEMS} from "../const.js";
 
 const createSiteMenuCountMarkup = (count) => {
   return count > 0 ? `<span class="main-navigation__item-count">${count}</span>` : ``;
@@ -40,27 +41,15 @@ const createMenuTemplate = (menuItems, menuAdditionalItems) => {
   );
 };
 
-export default class SiteMenu {
-  constructor(menuItems, additionalMenuItems) {
-    this._menuItems = menuItems;
-    this._additionalMenuItems = additionalMenuItems;
+export default class SiteMenu extends AbstractComponent {
+  constructor() {
+    super();
 
-    this._element = null;
+    this._menuItems = SITE_MENU_ITEMS;
+    this._additionalMenuItems = SITE_MENU_ADDITIONAL_ITEMS;
   }
 
   getTemplate() {
     return createMenuTemplate(this._menuItems, this._additionalMenuItems);
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }
