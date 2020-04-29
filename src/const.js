@@ -1,16 +1,3 @@
-export const SORT_ITEMS = [
-  {
-    code: `default`,
-    title: `Sort by default`
-  }, {
-    code: `date`,
-    title: `Sort by date`
-  }, {
-    code: `rating`,
-    title: `Sort by rating`
-  }
-];
-
 export const SITE_MENU_ITEMS = [
   {
     href: `#all`,

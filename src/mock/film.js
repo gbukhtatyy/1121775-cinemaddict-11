@@ -1,4 +1,4 @@
-import {getRandomInt, getRandomElementArray, getRandomElementsArray} from "../utils.js";
+import {getRandomInt, getRandomElementArray, getRandomElementsArray} from "../utils/common.js";
 
 const PosterItems = [
   `made-for-each-other.png`,

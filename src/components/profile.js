@@ -1,4 +1,4 @@
-import {createElement} from "../utils.js";
+import AbstractComponent from "./abstract-component.js";
 
 const createProfileTemplate = () => {
   return (
@@ -9,27 +9,15 @@ const createProfileTemplate = () => {
   );
 };
 
-export default class Profile {
+export default class Profile extends AbstractComponent {
   constructor(menuItems, additionalMenuItems) {
+    super();
+
     this._menuItems = menuItems;
     this._additionalMenuItems = additionalMenuItems;
-
-    this._element = null;
   }
 
   getTemplate() {
     return createProfileTemplate(this._menuItems, this._additionalMenuItems);
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }
