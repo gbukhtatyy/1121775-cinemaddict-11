@@ -86,7 +86,7 @@ const getSortedFilms = (films, sortType, from, to) => {
   return sortedTasks.slice(from, to);
 };
 
-export default class Board {
+export default class Page {
   constructor(container) {
     this._container = container;
 
