@@ -81,7 +81,10 @@ const generateFilm = () => {
     minutes: getRandomInt(120, 180),
     category: getRandomElementArray(CategoryItems),
     description: getRandomElementsArray(DescriptionItems, getRandomInt(5)),
-    comments: generateComments(getRandomInt(15))
+    comments: generateComments(getRandomInt(15)),
+    isWatchlist: getRandomInt(2),
+    isWatched: getRandomInt(2),
+    isFavorite: getRandomInt(2)
   };
 };
 
