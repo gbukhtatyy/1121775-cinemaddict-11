@@ -1,13 +1,14 @@
+import moment from "moment";
+
 /**
  * Format count minutes to "xh xm"
  * @param {Number} totalMinutes
  * @return {String} 1h 25m
  */
 export const generateLengthMarkup = (totalMinutes) => {
-  const hours = Math.floor(totalMinutes / 60);
-  const minutes = totalMinutes % 60;
+  const duration = moment.duration(totalMinutes, `minutes`);
 
-  return `${hours}h ${minutes}m`;
+  return (`${duration.hours()}h ${duration.minutes()}m`);
 };
 
 /**
