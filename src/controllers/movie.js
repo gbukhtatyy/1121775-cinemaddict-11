@@ -43,8 +43,7 @@ export default class Movie {
       this._openFilmPopup();
     });
 
-    const buttonClosePopup = this._filmPopupComponent.getElement().querySelector(`.film-details__close-btn`);
-    buttonClosePopup.addEventListener(`click`, () => {
+    this._filmPopupComponent.setClickCloseHandler(()=>{
       this._closeFilmPopup();
     });
 

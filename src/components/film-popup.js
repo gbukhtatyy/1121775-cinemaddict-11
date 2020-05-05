@@ -181,6 +181,7 @@ export default class FilmPopup extends AbstractSmartComponent {
 
     this._film = film;
     this._submitHandler = null;
+    this._closeHandler = null;
 
     this._subscribeOnEvents();
   }
@@ -195,7 +196,15 @@ export default class FilmPopup extends AbstractSmartComponent {
 
   recoveryListeners() {
     this.setSubmitHandler(this._submitHandler);
+    this.setClickCloseHandler(this._closeHandler);
     this._subscribeOnEvents();
+  }
+
+  setClickCloseHandler(handler) {
+    this.getElement().querySelector(`.film-details__close-btn`)
+      .addEventListener(`click`, handler);
+
+    this._closeHandler = handler;
   }
 
   setSubmitHandler(handler) {
