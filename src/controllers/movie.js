@@ -1,7 +1,7 @@
 import FilmComponent from "../components/film.js";
 import FilmPopupComponent from "../components/film-popup.js";
 
-import {RenderPosition, render} from "../utils/render";
+import {RenderPosition, render, remove} from "../utils/render";
 import {isEscEvent} from "../utils/keyboard.js";
 
 const Mode = {
@@ -12,14 +12,12 @@ const Mode = {
 export default class Movie {
   constructor(container, onDataChange, onViewChange) {
     this._container = container;
-
-    this._mode = Mode.DEFAULT;
-
-    this._filmComponent = null;
-    this._filmPopupComponent = null;
-
     this._onDataChange = onDataChange;
     this._onViewChange = onViewChange;
+
+    this._mode = Mode.DEFAULT;
+    this._filmComponent = null;
+    this._filmPopupComponent = null;
 
     this._onEscKeyDown = this._onEscKeyDown.bind(this);
   }
@@ -75,5 +73,11 @@ export default class Movie {
     isEscEvent(evt, () => {
       this._closeFilmPopup();
     });
+  }
+
+  destroy() {
+    remove(this._filmPopupComponent);
+    remove(this._filmComponent);
+    document.removeEventListener(`keydown`, this._onEscKeyDown);
   }
 }
