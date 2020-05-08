@@ -22,3 +22,10 @@ export const SITE_MENU_ADDITIONAL_ITEMS = [{
   href: `#stats`,
   title: `Stats`,
 }];
+
+export const FilterType = {
+  ALL: `all`,
+  WATCHLIST: `watchlist`,
+  HISTORY: `history`,
+  FAVORITES: `favorites`
+};

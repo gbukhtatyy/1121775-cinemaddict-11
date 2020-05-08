@@ -1,11 +1,14 @@
 // Import components
 import ProfileComponent from "./components/profile.js";
-import SiteMenuComponent from "./components/site-menu.js";
 import SiteStatisticComponent from "./components/site-statistic.js";
 import BoardComponent from "./components/board.js";
 
 // Import controllers
 import PageController from "./controllers/page.js";
+import FilterController from "./controllers/filter.js";
+
+// Import models
+import MoviesModel from "./models/movies.js";
 
 // Import constants and utils
 import {RenderPosition, render} from "./utils/render.js";
@@ -19,6 +22,8 @@ const STATISTIC_NUMBER = `123 456`;
 
 // Define Data
 const films = generateFilms(FILM_COUNT);
+const moviesModel = new MoviesModel();
+moviesModel.setMovies(films);
 
 // Define containers
 const siteHeaderElement = document.querySelector(`.header`);
@@ -27,10 +32,12 @@ const siteFooterElement = document.querySelector(`.footer`);
 
 // Render
 render(siteHeaderElement, new ProfileComponent(), RenderPosition.BEFOREEND);
-render(siteMainElement, new SiteMenuComponent(), RenderPosition.BEFOREEND);
 render(siteFooterElement, new SiteStatisticComponent(STATISTIC_NUMBER), RenderPosition.BEFOREEND);
 
+const filterController = new FilterController(siteMainElement, moviesModel);
+filterController.render();
+
 const boardComponent = new BoardComponent();
-const boardController = new PageController(boardComponent);
+const boardController = new PageController(boardComponent, moviesModel);
 render(siteMainElement, boardComponent, RenderPosition.BEFOREEND);
-boardController.render(films);
+boardController.render();
