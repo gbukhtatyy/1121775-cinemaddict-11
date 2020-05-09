@@ -21,6 +21,7 @@ export default class FilterController {
   render() {
     const container = this._container;
     const allMovies = this._moviesModel.getMoviesAll();
+
     const filters = Object.values(FilterType).map((filterType) => {
       return {
         name: filterType,
@@ -28,8 +29,8 @@ export default class FilterController {
         checked: filterType === this._activeFilterType,
       };
     });
-    const oldComponent = this._filterComponent;
 
+    const oldComponent = this._filterComponent;
     this._filterComponent = new FilterComponent(filters);
     this._filterComponent.setFilterChangeHandler(this._onFilterChange);
 

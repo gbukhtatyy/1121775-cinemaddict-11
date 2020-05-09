@@ -37,7 +37,7 @@ const createEmojiMarkup = (type, isChecked) => {
 };
 
 const createCommentMarkup = (comment) => {
-  const {author, content, emoji} = comment;
+  const {id, author, content, emoji} = comment;
   return (
     `<li class="film-details__comment">
       <span class="film-details__comment-emoji">
@@ -48,7 +48,7 @@ const createCommentMarkup = (comment) => {
         <p class="film-details__comment-info">
           <span class="film-details__comment-author">${author}</span>
           <span class="film-details__comment-day">Today</span>
-          <button class="film-details__comment-delete">Delete</button>
+          <button class="film-details__comment-delete" data-comment-id="${id}">Delete</button>
         </p>
       </div>
     </li>`
@@ -180,8 +180,10 @@ export default class FilmPopup extends AbstractSmartComponent {
     super();
 
     this._film = film;
+
     this._submitHandler = null;
     this._closeHandler = null;
+    this._deleteCommentHandler = null;
 
     this._subscribeOnEvents();
   }
@@ -197,6 +199,7 @@ export default class FilmPopup extends AbstractSmartComponent {
   recoveryListeners() {
     this.setSubmitHandler(this._submitHandler);
     this.setClickCloseHandler(this._closeHandler);
+    this.setDeleteCommentHandler(this._deleteCommentHandler);
     this._subscribeOnEvents();
   }
 
@@ -212,6 +215,16 @@ export default class FilmPopup extends AbstractSmartComponent {
       .addEventListener(`submit`, handler);
 
     this._submitHandler = handler;
+  }
+
+  setDeleteCommentHandler(handler) {
+    this.getElement()
+      .querySelectorAll(`.film-details__comment-delete`)
+      .forEach((it) => {
+        console.log(it);
+      });
+
+    this._deleteCommentHandler = handler;
   }
 
   _subscribeOnEvents() {

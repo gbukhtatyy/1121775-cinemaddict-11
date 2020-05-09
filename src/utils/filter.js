@@ -5,11 +5,11 @@ export const getActiveMovies = (movies) => {
 };
 
 export const getMoviesInWatchlist = (movies) => {
-  return movies.filter((movie) => movie.isHistory);
+  return movies.filter((movie) => movie.isWatchlist);
 };
 
 export const getHistoryMovies = (movies) => {
-  return movies.filter((movie) => movie.isHistory);
+  return movies.filter((movie) => movie.isWatched);
 };
 
 export const getFavoriteTasks = (movies) => {

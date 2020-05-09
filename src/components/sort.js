@@ -43,6 +43,8 @@ export default class Sort extends AbstractComponent {
   constructor() {
     super();
 
+    this._currentSortType = SortType.DEFAULT;
+
     this._items = SORT_ITEMS;
   }
 

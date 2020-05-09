@@ -60,6 +60,7 @@ const EmojyItems = [
 
 const generateComment = () => {
   return {
+    id: String(new Date() + Math.random()),
     author: getRandomElementArray(AuthorItems),
     content: getRandomElementArray(CommentItems),
     emoji: getRandomElementArray(EmojyItems)
