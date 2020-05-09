@@ -63,6 +63,10 @@ export default class Movie {
       this._filmPopupComponent.rerender();
     });
 
+    this._filmPopupComponent.setAddCommentHandler((evt) => {
+      evt.preventDefault();
+    });
+
     render(container, this._filmComponent, RenderPosition.BEFOREEND);
   }
 

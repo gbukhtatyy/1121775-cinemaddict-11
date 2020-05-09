@@ -182,8 +182,8 @@ export default class FilmPopup extends AbstractSmartComponent {
     this._film = film;
     this._comments = film.comments;
 
-    this._submitHandler = null;
     this._closeHandler = null;
+    this._addCommentHandler = null;
     this._deleteCommentHandler = null;
 
     this._subscribeOnEvents();
@@ -198,8 +198,8 @@ export default class FilmPopup extends AbstractSmartComponent {
   }
 
   recoveryListeners() {
-    this.setSubmitHandler(this._submitHandler);
     this.setClickCloseHandler(this._closeHandler);
+    this.setAddCommentHandler(this._addCommentHandler);
     this.setDeleteCommentHandler(this._deleteCommentHandler);
     this._subscribeOnEvents();
   }
@@ -211,11 +211,8 @@ export default class FilmPopup extends AbstractSmartComponent {
     this._closeHandler = handler;
   }
 
-  setSubmitHandler(handler) {
-    this.getElement().querySelector(`form`)
-      .addEventListener(`submit`, handler);
-
-    this._submitHandler = handler;
+  setAddCommentHandler(handler) {
+    this._addCommentHandler = handler;
   }
 
   setDeleteCommentHandler(handler) {
@@ -255,6 +252,7 @@ export default class FilmPopup extends AbstractSmartComponent {
     element.querySelectorAll(`[name=comment-emoji]`).forEach(() => {
       element.addEventListener(`change`, (evt) => {
         elementEmoji.innerHTML = createEmojiImgMarkup(evt.target.value, EMOJI_SIZE_BIG);
+        this._addCommentHandler(evt);
       });
     });
   }
