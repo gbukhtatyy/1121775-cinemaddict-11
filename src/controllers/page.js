@@ -23,9 +23,9 @@ const FILM_EXTRA_RATED_TITLE = `Top rated`;
 // Define render functions
 const renderFilms = (container, films, onDataChange, onViewChange) => {
   return films.map((film) => {
-    const movieController = new MovieController(container, onDataChange, onViewChange);
+    const movieController = new MovieController(container, film, onDataChange, onViewChange);
 
-    movieController.render(film);
+    movieController.render();
 
     return movieController;
   });
@@ -183,16 +183,14 @@ export default class Page {
   }
 
   _onLoadMoreButtonClick() {
-    console.log(`click`);
     const prevFilmsCount = this._showingFilmsCount;
     const films = this._moviesModel.getMovies();
 
     this._showingFilmsCount = this._showingFilmsCount + SHOWING_FILMS_COUNT_BY_BUTTON;
-    console.log(prevFilmsCount, this._showingFilmsCount);
-    console.log(this._sortComponent.getSortType());
+
     const sortedFilms = getSortedFilms(films, this._sortComponent.getSortType(), prevFilmsCount, this._showingFilmsCount);
     this._renderFilms(sortedFilms);
-    console.log(sortedFilms);
+
     if (this._showingFilmsCount >= films.length) {
       remove(this._loadMoreButtonComponent);
     }

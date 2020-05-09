@@ -55,8 +55,8 @@ const createCommentMarkup = (comment) => {
   );
 };
 
-const createFilmPopupTemplate = (film) => {
-  const {poster, title, rating, minutes, description, comments} = film;
+const createFilmPopupTemplate = (film, comments) => {
+  const {poster, title, rating, minutes, description} = film;
 
   const length = generateLengthMarkup(minutes);
   const countComments = comments.length;
@@ -180,6 +180,7 @@ export default class FilmPopup extends AbstractSmartComponent {
     super();
 
     this._film = film;
+    this._comments = film.comments;
 
     this._submitHandler = null;
     this._closeHandler = null;
@@ -193,7 +194,7 @@ export default class FilmPopup extends AbstractSmartComponent {
   }
 
   getTemplate() {
-    return createFilmPopupTemplate(this._film);
+    return createFilmPopupTemplate(this._film, this._comments);
   }
 
   recoveryListeners() {
@@ -218,13 +219,12 @@ export default class FilmPopup extends AbstractSmartComponent {
   }
 
   setDeleteCommentHandler(handler) {
-    this.getElement()
-      .querySelectorAll(`.film-details__comment-delete`)
-      .forEach((it) => {
-        console.log(it);
-      });
-
     this._deleteCommentHandler = handler;
+
+    const comments = this.getElement().querySelectorAll(`.film-details__comment-delete`);
+    Array.from(comments).forEach((item) => {
+      item.addEventListener(`click`, handler);
+    });
   }
 
   _subscribeOnEvents() {

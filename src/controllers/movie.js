@@ -10,8 +10,9 @@ const Mode = {
 };
 
 export default class Movie {
-  constructor(container, onDataChange, onViewChange) {
+  constructor(container, film, onDataChange, onViewChange) {
     this._container = container;
+    this._film = film;
     this._onDataChange = onDataChange;
     this._onViewChange = onViewChange;
 
@@ -22,7 +23,8 @@ export default class Movie {
     this._onEscKeyDown = this._onEscKeyDown.bind(this);
   }
 
-  render(film) {
+  render() {
+    const film = this._film;
     const container = this._container;
     this._filmComponent = new FilmComponent(film);
     this._filmPopupComponent = new FilmPopupComponent(film);
@@ -41,8 +43,24 @@ export default class Movie {
       this._openFilmPopup();
     });
 
-    this._filmPopupComponent.setClickCloseHandler(()=>{
+    this._filmPopupComponent.setClickCloseHandler(() => {
       this._closeFilmPopup();
+    });
+
+    this._filmPopupComponent.setDeleteCommentHandler((evt) => {
+      evt.preventDefault();
+      const deleteButton = evt.target;
+      const commentId = deleteButton.dataset.commentId;
+
+      deleteButton.disabled = true;
+      deleteButton.innerText = `Deleting...`;
+
+      const comments = this._filmPopupComponent._comments;
+      const indexDeletedComment = comments.findIndex((it) => it.id === commentId);
+      const newComments = [].concat(comments.slice(0, indexDeletedComment), comments.slice(indexDeletedComment + 1));
+
+      this._filmPopupComponent._comments = newComments;
+      this._filmPopupComponent.rerender();
     });
 
     render(container, this._filmComponent, RenderPosition.BEFOREEND);
