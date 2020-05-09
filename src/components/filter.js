@@ -7,6 +7,7 @@ const createSiteMenuCountMarkup = (count) => {
 
 const createFilterMarkup = (item) => {
   const {name, count, checked} = item;
+
   const activeClass = checked ? `main-navigation__item--active` : ``;
   const countMarkup = (name !== FilterType.ALL) ? createSiteMenuCountMarkup(count) : ``;
 
@@ -16,7 +17,7 @@ const createFilterMarkup = (item) => {
 };
 
 const createMenuTemplate = (filters) => {
-  const filtersMarkup = filters.map((it, i) => createFilterMarkup(it, i === 1)).join(`\n`);
+  const filtersMarkup = filters.map((it) => createFilterMarkup(it)).join(`\n`);
 
   return (
     `<nav class="main-navigation">
@@ -48,7 +49,8 @@ export default class Filter extends AbstractComponent {
         return;
       }
 
-      const filterType = evt.target.dataset.filterType;
+      const element = evt.target;
+      const filterType = element.dataset.filterType;
 
       if (this._currentFilterType === filterType) {
         return;
@@ -56,7 +58,15 @@ export default class Filter extends AbstractComponent {
 
       this._currentFilterType = filterType;
 
+      this._toggleActiveFilter(element);
       handler(filterType);
     });
+  }
+
+  _toggleActiveFilter(element) {
+    this.getElement().querySelectorAll(`.main-navigation__item`).forEach((el) => {
+      el.classList.remove(`main-navigation__item--active`);
+    });
+    element.classList.add(`main-navigation__item--active`);
   }
 }

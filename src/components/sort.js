@@ -64,7 +64,8 @@ export default class Sort extends AbstractComponent {
         return;
       }
 
-      const sortType = evt.target.dataset.sortType;
+      const element = evt.target;
+      const sortType = element.dataset.sortType;
 
       if (this._currentSortType === sortType) {
         return;
@@ -72,7 +73,15 @@ export default class Sort extends AbstractComponent {
 
       this._currentSortType = sortType;
 
+      this._toggleActiveSort(element);
       handler(this._currentSortType);
     });
+  }
+
+  _toggleActiveSort(element) {
+    this.getElement().querySelectorAll(`.sort__button`).forEach((el) => {
+      el.classList.remove(`sort__button--active`);
+    });
+    element.classList.add(`sort__button--active`);
   }
 }
