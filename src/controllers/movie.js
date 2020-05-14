@@ -1,8 +1,14 @@
 import FilmComponent from "../components/film.js";
 import FilmPopupComponent from "../components/film-popup.js";
-
-import {RenderPosition, render, remove} from "../utils/render";
-import {isEscEvent} from "../utils/keyboard.js";
+import {
+  RenderPosition,
+  render,
+  remove,
+  replace
+} from "../utils/render";
+import {
+  isEscEvent
+} from "../utils/keyboard.js";
 
 const Mode = {
   DEFAULT: `default`,
@@ -10,9 +16,8 @@ const Mode = {
 };
 
 export default class Movie {
-  constructor(container, film, onDataChange, onViewChange) {
+  constructor(container, onDataChange, onViewChange) {
     this._container = container;
-    this._film = film;
     this._onDataChange = onDataChange;
     this._onViewChange = onViewChange;
 
@@ -23,28 +28,56 @@ export default class Movie {
     this._onEscKeyDown = this._onEscKeyDown.bind(this);
   }
 
-  render() {
-    const film = this._film;
+  render(film) {
+    const oldFilmComponent = this._filmComponent;
+    const oldFilmPopupComponent = this._filmPopupComponent;
+
     const container = this._container;
     this._filmComponent = new FilmComponent(film);
     this._filmPopupComponent = new FilmPopupComponent(film);
 
-    const filmPoster = this._filmComponent.getElement().querySelector(`.film-card__poster`);
-    const filmTitle = this._filmComponent.getElement().querySelector(`.film-card__title`);
-    const filmComments = this._filmComponent.getElement().querySelector(`.film-card__comments`);
-
-    filmPoster.addEventListener(`click`, () => {
+    this._filmComponent.setOpenClickHandler(() => {
       this._openFilmPopup();
     });
-    filmTitle.addEventListener(`click`, () => {
-      this._openFilmPopup();
+    this._filmComponent.setWatchedButtonClickHandler((evt) => {
+      evt.preventDefault();
+      this._onDataChange(this, film, Object.assign({}, film, {
+        isWatched: !film.isWatched,
+      }));
     });
-    filmComments.addEventListener(`click`, () => {
-      this._openFilmPopup();
+    this._filmComponent.setWatchlistButtonClickHandler((evt) => {
+      evt.preventDefault();
+      this._onDataChange(this, film, Object.assign({}, film, {
+        isWatchlist: !film.isWatchlist,
+      }));
+    });
+    this._filmComponent.setFavoriteButtonClickHandler((evt) => {
+      evt.preventDefault();
+      this._onDataChange(this, film, Object.assign({}, film, {
+        isFavorite: !film.isFavorite,
+      }));
     });
 
     this._filmPopupComponent.setClickCloseHandler(() => {
       this._closeFilmPopup();
+    });
+    this._filmPopupComponent.setWatchedButtonClickHandler((evt) => {
+      evt.preventDefault();
+      this._onDataChange(this, film, Object.assign({}, film, {
+        isWatched: !film.isWatched,
+      }));
+    });
+    this._filmPopupComponent.setWatchlistButtonClickHandler((evt) => {
+      evt.preventDefault();
+      this._onDataChange(this, film, Object.assign({}, film, {
+        isWatchlist: !film.isWatchlist,
+      }));
+    });
+    this._filmPopupComponent.setFavoriteButtonClickHandler((evt) => {
+      evt.preventDefault();
+      this._onDataChange(this, film, Object.assign({}, film, {
+        isFavorite: !film.isFavorite,
+      }));
     });
 
     this._filmPopupComponent.setDeleteCommentHandler((evt) => {
@@ -62,12 +95,16 @@ export default class Movie {
       this._filmPopupComponent._comments = newComments;
       this._filmPopupComponent.rerender();
     });
-
     this._filmPopupComponent.setAddCommentHandler((evt) => {
       evt.preventDefault();
     });
 
-    render(container, this._filmComponent, RenderPosition.BEFOREEND);
+    if (oldFilmComponent && oldFilmPopupComponent) {
+      replace(this._filmComponent, oldFilmComponent);
+      replace(this._filmPopupComponent, oldFilmPopupComponent);
+    } else {
+      render(container, this._filmComponent, RenderPosition.BEFOREEND);
+    }
   }
 
   setDefaultView() {

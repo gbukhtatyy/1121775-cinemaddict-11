@@ -1,3 +1,5 @@
+import moment from "moment";
+
 import AbstractSmartComponent from "./abstract-smart-component.js";
 
 import {generateLengthMarkup} from "../utils/common.js";
@@ -36,6 +38,12 @@ const createEmojiMarkup = (type, isChecked) => {
   );
 };
 
+const createGenreMarkup = (genre) => {
+  return (
+    `<span class="film-details__genre">${genre}</span>`
+  );
+};
+
 const createCommentMarkup = (comment) => {
   const {id, author, content, emoji} = comment;
   return (
@@ -56,11 +64,28 @@ const createCommentMarkup = (comment) => {
 };
 
 const createFilmPopupTemplate = (film, comments) => {
-  const {poster, title, rating, minutes, description} = film;
+  const {
+    title,
+    alternativeTitle,
+    description,
+    totalRating,
+    runtime,
+    poster,
+    genres,
+    director,
+    writers,
+    actors,
+    releaseDate,
+    releaseCountry
+  } = film;
 
-  const length = generateLengthMarkup(minutes);
+  const length = generateLengthMarkup(runtime);
   const countComments = comments.length;
+  const writersContent = writers.join(`, `);
+  const actorsContent = actors.join(`, `);
 
+  const releaseDateMarkup = moment(releaseDate).format(`DD MMMM YYYY`);
+  const genresMarkup = genres.map((genre) => createGenreMarkup(genre)).join(`\n`);
   const commentsMarkup = comments.map((comment) => createCommentMarkup(comment)).join(`\n`);
 
   const checkedWatchlist = film.isWatchlist ? `checked` : ``;
@@ -80,7 +105,7 @@ const createFilmPopupTemplate = (film, comments) => {
             </div>
             <div class="film-details__info-wrap">
               <div class="film-details__poster">
-                <img class="film-details__poster-img" src="./images/posters/${poster}" alt="">
+                <img class="film-details__poster-img" src="${poster}" alt="${title}">
 
                 <p class="film-details__age">18+</p>
               </div>
@@ -89,30 +114,30 @@ const createFilmPopupTemplate = (film, comments) => {
                 <div class="film-details__info-head">
                   <div class="film-details__title-wrap">
                     <h3 class="film-details__title">${title}</h3>
-                    <p class="film-details__title-original">Original: The Great Flamarion</p>
+                    <p class="film-details__title-original">Original: ${alternativeTitle}</p>
                   </div>
 
                   <div class="film-details__rating">
-                    <p class="film-details__total-rating">${rating}</p>
+                    <p class="film-details__total-rating">${totalRating}</p>
                   </div>
                 </div>
 
                 <table class="film-details__table">
                   <tbody><tr class="film-details__row">
                     <td class="film-details__term">Director</td>
-                    <td class="film-details__cell">Anthony Mann</td>
+                    <td class="film-details__cell">${director}</td>
                   </tr>
                   <tr class="film-details__row">
                     <td class="film-details__term">Writers</td>
-                    <td class="film-details__cell">Anne Wigton, Heinz Herald, Richard Weil</td>
+                    <td class="film-details__cell">${writersContent}</td>
                   </tr>
                   <tr class="film-details__row">
                     <td class="film-details__term">Actors</td>
-                    <td class="film-details__cell">Erich von Stroheim, Mary Beth Hughes, Dan Duryea</td>
+                    <td class="film-details__cell">${actorsContent}</td>
                   </tr>
                   <tr class="film-details__row">
                     <td class="film-details__term">Release Date</td>
-                    <td class="film-details__cell">30 March 1945</td>
+                    <td class="film-details__cell">${releaseDateMarkup}</td>
                   </tr>
                   <tr class="film-details__row">
                     <td class="film-details__term">Runtime</td>
@@ -120,20 +145,15 @@ const createFilmPopupTemplate = (film, comments) => {
                   </tr>
                   <tr class="film-details__row">
                     <td class="film-details__term">Country</td>
-                    <td class="film-details__cell">USA</td>
+                    <td class="film-details__cell">${releaseCountry}</td>
                   </tr>
                   <tr class="film-details__row">
                     <td class="film-details__term">Genres</td>
-                    <td class="film-details__cell">
-                      <span class="film-details__genre">Drama</span>
-                      <span class="film-details__genre">Film-Noir</span>
-                      <span class="film-details__genre">Mystery</span></td>
+                    <td class="film-details__cell">${genresMarkup}</td>
                   </tr>
                 </tbody></table>
 
-                <p class="film-details__film-description">
-                  ${description}
-                </p>
+                <p class="film-details__film-description">${description}</p>
               </div>
             </div>
 
@@ -153,9 +173,7 @@ const createFilmPopupTemplate = (film, comments) => {
             <section class="film-details__comments-wrap">
               <h3 class="film-details__comments-title">Comments <span class="film-details__comments-count">${countComments}</span></h3>
 
-              <ul class="film-details__comments-list">
-                ${commentsMarkup}
-              </ul>
+              <ul class="film-details__comments-list">${commentsMarkup}</ul>
 
               <div class="film-details__new-comment">
                 <div for="add-emoji" class="film-details__add-emoji-label"></div>
@@ -228,32 +246,26 @@ export default class FilmPopup extends AbstractSmartComponent {
     const element = this.getElement();
     const elementEmoji = element.querySelector(`.film-details__add-emoji-label`);
 
-    element.querySelector(`.film-details__control-label--watchlist`)
-      .addEventListener(`click`, () => {
-        this._film.isWatchlist = !this._film.isWatchlist;
-
-        this.rerender();
-      });
-
-    element.querySelector(`.film-details__control-label--watched`)
-      .addEventListener(`click`, () => {
-        this._film.isWatched = !this._film.isWatched;
-
-        this.rerender();
-      });
-
-    element.querySelector(`.film-details__control-label--favorite`)
-      .addEventListener(`click`, () => {
-        this._film.isFavorite = !this._film.isFavorite;
-
-        this.rerender();
-      });
-
     element.querySelectorAll(`[name=comment-emoji]`).forEach(() => {
       element.addEventListener(`change`, (evt) => {
         elementEmoji.innerHTML = createEmojiImgMarkup(evt.target.value, EMOJI_SIZE_BIG);
         this._addCommentHandler(evt);
       });
     });
+  }
+
+  setWatchlistButtonClickHandler(handler) {
+    this.getElement().querySelector(`.film-details__control-label--watchlist`)
+      .addEventListener(`click`, handler);
+  }
+
+  setWatchedButtonClickHandler(handler) {
+    this.getElement().querySelector(`.film-details__control-label--watched`)
+      .addEventListener(`click`, handler);
+  }
+
+  setFavoriteButtonClickHandler(handler) {
+    this.getElement().querySelector(`.film-details__control-label--favorite`)
+      .addEventListener(`click`, handler);
   }
 }

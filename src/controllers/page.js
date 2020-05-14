@@ -1,5 +1,7 @@
 // Import components
-import SortComponent, {SortType} from "../components/sort.js";
+import SortComponent, {
+  SortType
+} from "../components/sort.js";
 import FilmsComponent from "../components/films.js";
 import FilmsEmptyComponent from "../components/films-empty.js";
 import FilmsExtraComponent from "../components/films-extra.js";
@@ -9,8 +11,14 @@ import LoadMoreButtonComponent from "../components/load-more-button.js";
 import MovieController from "./movie.js";
 
 // Import constants and utils
-import {RenderPosition, render, remove} from "../utils/render.js";
-import {getRandomElementsArray} from "../utils/common.js";
+import {
+  RenderPosition,
+  render,
+  remove
+} from "../utils/render.js";
+import {
+  getRandomElementsArray
+} from "../utils/common.js";
 
 // Define constants
 const FILM_EXTRA_COUNT = 2;
@@ -23,10 +31,8 @@ const FILM_EXTRA_RATED_TITLE = `Top rated`;
 // Define render functions
 const renderFilms = (container, films, onDataChange, onViewChange) => {
   return films.map((film) => {
-    const movieController = new MovieController(container, film, onDataChange, onViewChange);
-
-    movieController.render();
-
+    const movieController = new MovieController(container, onDataChange, onViewChange);
+    movieController.render(film);
     return movieController;
   });
 };
@@ -45,10 +51,10 @@ const getSortedFilms = (films, sortType, from, to) => {
 
   switch (sortType) {
     case SortType.DATE:
-      sortedFilms = showingFilms.sort((a, b) => a.year - b.year);
+      sortedFilms = showingFilms.sort((a, b) => a.releaseDate - b.releaseDate);
       break;
     case SortType.RATING:
-      sortedFilms = showingFilms.sort((a, b) => b.rating - a.rating);
+      sortedFilms = showingFilms.sort((a, b) => b.totalRating - a.totalRating);
       break;
     case SortType.DEFAULT:
       sortedFilms = showingFilms;
@@ -107,19 +113,6 @@ export default class Page {
 
     newFilms = renderFilmsExtra(container, FILM_EXTRA_COMMENTED_TITLE, getRandomElementsArray(films, FILM_EXTRA_COUNT), this._onDataChange, this._onViewChange);
     this._showedFilmControllers = this._showedFilmControllers.concat(newFilms);
-
-    this._sortComponent.setSortTypeChangeHandler((sortType) => {
-      this._showingFilmsCount = SHOWING_FILMS_COUNT_ON_START;
-
-      const sortedFilms = getSortedFilms(films, sortType, 0, this._showingFilmsCount);
-
-      filmsListElement.innerHTML = ``;
-
-      newFilms = renderFilms(filmsListElement, sortedFilms.slice(0, this._showingFilmsCount), this._onDataChange, this._onViewChange);
-      this._showedFilmControllers = this._showedFilmControllers.concat(newFilms);
-
-      this._renderLoadMoreButton();
-    });
   }
 
   _removeFilms() {
@@ -128,7 +121,6 @@ export default class Page {
   }
 
   _renderFilms(films) {
-    render(`render`);
     const filmsListElement = this._filmsComponent.getFilmsListElement();
     const newFilms = renderFilms(filmsListElement, films, this._onDataChange, this._onViewChange);
 
@@ -159,10 +151,16 @@ export default class Page {
   }
 
   _onDataChange(filmController, oldData, newData) {
-    const isSuccess = this._moviesModel.updateMovie(oldData.id, newData);
+    if (oldData === null) {
 
-    if (isSuccess) {
-      filmController.render(newData);
+    } else if (newData === null) {
+
+    } else {
+      const isSuccess = this._moviesModel.updateMovie(oldData.id, newData);
+
+      if (isSuccess) {
+        filmController.render(newData);
+      }
     }
   }
 
@@ -183,8 +181,8 @@ export default class Page {
   }
 
   _onLoadMoreButtonClick() {
-    const prevFilmsCount = this._showingFilmsCount;
     const films = this._moviesModel.getMovies();
+    const prevFilmsCount = this._showingFilmsCount;
 
     this._showingFilmsCount = this._showingFilmsCount + SHOWING_FILMS_COUNT_BY_BUTTON;
 
@@ -197,6 +195,7 @@ export default class Page {
   }
 
   _onFilterTypeChange() {
+    this._sortComponent.setSortType(SortType.DEFAULT);
     this._updateFilms(SHOWING_FILMS_COUNT_ON_START);
   }
 }
