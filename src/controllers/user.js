@@ -20,7 +20,7 @@ const getUserStatus = (watchedFilms) => {
 
 const getWatchedFilms = (films) => {
   return films.filter((film) => film.isWatched);
-}
+};
 
 export default class User {
   constructor(filmsModel) {

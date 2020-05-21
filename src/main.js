@@ -16,12 +16,6 @@ import MoviesModel from "./models/movies.js";
 // Import constants and utils
 import {RenderPosition, render} from "./utils/render.js";
 
-// Import mocks
-import {generateFilms} from "./mock/film.js";
-
-// Define constants
-const STATISTIC_NUMBER = `123 456`;
-
 const AUTHORIZATION = `Basic 73uthf73ghf85674isop9guz`;
 const END_POINT = `https://11.ecmascript.pages.academy/cinemaddict`;
 
@@ -36,21 +30,27 @@ const siteMainElement = document.querySelector(`.main`);
 const siteFooterElement = document.querySelector(`.footer`);
 
 // Render
-render(siteHeaderElement, new ProfileComponent(), RenderPosition.BEFOREEND);
-render(siteFooterElement, new SiteStatisticComponent(STATISTIC_NUMBER), RenderPosition.BEFOREEND);
 
 Promise.all([
   api.getMovies()
 ]).then((result) => {
   const [movies] = result;
+
   // Define Data
   moviesModel.setMovies(movies);
+
+  // Render profile and static
+  render(siteHeaderElement, new ProfileComponent(moviesModel), RenderPosition.BEFOREEND);
+  render(siteFooterElement, new SiteStatisticComponent(movies.length), RenderPosition.BEFOREEND);
+
 
   const filterController = new FilterController(siteMainElement, moviesModel);
   filterController.render();
 
   const boardComponent = new BoardComponent();
   const boardController = new PageController(boardComponent, moviesModel);
+
   render(siteMainElement, boardComponent, RenderPosition.BEFOREEND);
   boardController.render();
+
 });

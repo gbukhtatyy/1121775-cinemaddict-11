@@ -108,11 +108,11 @@ export default class Page {
 
     this._renderLoadMoreButton();
 
-    newFilms = renderFilmsExtra(container, FILM_EXTRA_RATED_TITLE, getRandomElementsArray(films, FILM_EXTRA_COUNT), this._onDataChange, this._onViewChange);
-    this._showedFilmControllers = this._showedFilmControllers.concat(newFilms);
+    //newFilms = renderFilmsExtra(container, FILM_EXTRA_RATED_TITLE, getRandomElementsArray(films, FILM_EXTRA_COUNT), this._onDataChange, this._onViewChange);
+    //this._showedFilmControllers = this._showedFilmControllers.concat(newFilms);
 
-    newFilms = renderFilmsExtra(container, FILM_EXTRA_COMMENTED_TITLE, getRandomElementsArray(films, FILM_EXTRA_COUNT), this._onDataChange, this._onViewChange);
-    this._showedFilmControllers = this._showedFilmControllers.concat(newFilms);
+    //newFilms = renderFilmsExtra(container, FILM_EXTRA_COMMENTED_TITLE, getRandomElementsArray(films, FILM_EXTRA_COUNT), this._onDataChange, this._onViewChange);
+    //this._showedFilmControllers = this._showedFilmControllers.concat(newFilms);
   }
 
   _removeFilms() {
@@ -152,9 +152,9 @@ export default class Page {
 
   _onDataChange(filmController, oldData, newData) {
     if (oldData === null) {
-
+      return;
     } else if (newData === null) {
-
+      return;
     } else {
       const isSuccess = this._moviesModel.updateMovie(oldData.id, newData);
 
@@ -188,6 +188,7 @@ export default class Page {
 
     const sortedFilms = getSortedFilms(films, this._sortComponent.getSortType(), prevFilmsCount, this._showingFilmsCount);
     this._renderFilms(sortedFilms);
+
 
     if (this._showingFilmsCount >= films.length) {
       remove(this._loadMoreButtonComponent);

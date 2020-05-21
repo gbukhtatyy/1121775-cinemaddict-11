@@ -21,8 +21,6 @@ export default class Api {
     this._authorization = authorization;
   }
 
-  //#region movies
-
   /**
    * Получение информации о фильмах
    * @return {Array}
@@ -51,10 +49,6 @@ export default class Api {
       .then((response) => response.json())
       .then(Movie.parseMovies);
   }
-
-  //#endregion
-
-  //#region comments
 
   /**
    * Получение комментариев к фильму.
@@ -97,8 +91,6 @@ export default class Api {
   deleteComment(commentId) {
     return this._load({url: `comments/${commentId}`, method: Method.DELETE});
   }
-
-  //#endregion
 
   /**
    * Синхронизация фильмов

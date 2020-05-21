@@ -1,7 +1,7 @@
 import {FilterType} from "../const.js";
 
 export const getActiveMovies = (movies) => {
-  return movies.filter((movie) => movie.id);
+  return movies;
 };
 
 export const getMoviesInWatchlist = (movies) => {
