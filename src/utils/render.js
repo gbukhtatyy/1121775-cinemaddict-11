@@ -1,3 +1,5 @@
+export const HIDDEN_CLASS = `visually-hidden`;
+
 export const RenderPosition = {
   BEFORE: `before`,
   AFTERBEGIN: `afterbegin`,

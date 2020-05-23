@@ -1,8 +1,7 @@
 import FilterComponent from "../components/filter.js";
-import {FilterType} from "../const.js";
 import {render, replace, RenderPosition} from "../utils/render.js";
 import {getMoviesByFilter} from "../utils/filter.js";
-
+import {FilterType} from "../const.js";
 
 export default class FilterController {
   constructor(container, moviesModel) {
@@ -12,38 +11,77 @@ export default class FilterController {
     this._activeFilterType = FilterType.ALL;
     this._filterComponent = null;
 
-    this._onDataChange = this._onDataChange.bind(this);
-    this._onFilterChange = this._onFilterChange.bind(this);
+    this._filterItemClickHandler = null;
+    this._statisticClickHandler = null;
 
+
+    this._onFilterChange = this._onFilterChange.bind(this);
+    this._onFilterTypeSet = this._onFilterTypeSet.bind(this);
+    this._onDataChange = this._onDataChange.bind(this);
+
+    this._moviesModel.setFilterChangeHandler(this._onFilterChange);
     this._moviesModel.setDataChangeHandler(this._onDataChange);
   }
 
   render() {
     const container = this._container;
-    const allMovies = this._moviesModel.getMoviesAll();
+    const oldComponent = this._filterComponent;
 
+    const allMovies = this._moviesModel.getMoviesAll();
     const filters = Object.values(FilterType).map((filterType) => {
       return {
         name: filterType,
         count: getMoviesByFilter(allMovies, filterType).length,
-        checked: filterType === this._activeFilterType,
+        isChecked: filterType === this._activeFilterType,
       };
     });
 
-    const oldComponent = this._filterComponent;
     this._filterComponent = new FilterComponent(filters);
-    this._filterComponent.setFilterChangeHandler(this._onFilterChange);
+
+    this._filterComponent.setFilterType(this._activeFilterType);
+    this._filterComponent.setFilterChangeHandler(this._onFilterTypeSet);
+
+    this._filterComponent.setFilterItemClickHandler(this._filterItemClickHandler);
+    this._filterComponent.setStatisticClickHandler(this._statisticClickHandler);
 
     if (oldComponent) {
       replace(this._filterComponent, oldComponent);
     } else {
-      render(container, this._filterComponent, RenderPosition.BEFOREEND);
+      render(container, this._filterComponent, RenderPosition.AFTERBEGIN);
     }
   }
 
-  _onFilterChange(filterType) {
-    this._moviesModel.setFilter(filterType);
-    this._activeFilterType = filterType;
+  setFilterItemClickHandler(handler) {
+    if (this._filterComponent) {
+      this._filterComponent.setFilterItemClickHandler(handler);
+    }
+    this._filterItemClickHandler = handler;
+  }
+
+  setStatisticClickHandler(handler) {
+    if (this._filterComponent) {
+      this._filterComponent.setStatisticClickHandler(handler);
+    }
+    this._statisticClickHandler = handler;
+  }
+
+  _onFilterChange() {
+    const newFilterType = this._moviesModel.getFilterType();
+
+    if (newFilterType === this._activeFilterType) {
+      return;
+    }
+
+    this._activeFilterType = newFilterType;
+    this.render();
+  }
+
+  _onFilterTypeSet(filterType) {
+    if (this._activeFilterType === filterType) {
+      return;
+    }
+
+    this._moviesModel.setFilterType(filterType);
   }
 
   _onDataChange() {

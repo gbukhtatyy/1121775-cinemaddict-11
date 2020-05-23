@@ -1,23 +1,28 @@
 import AbstractComponent from "./abstract-component.js";
-import {FilterType} from "../const.js";
+import {FilterType, FilterLabels} from "../const.js";
 
-const createSiteMenuCountMarkup = (count) => {
-  return count > 0 ? `<span class="main-navigation__item-count">${count}</span>` : ``;
-};
+const FILTER_CLASS = `main-navigation__item`;
+const FILTER_ACTIVE_CLASS = `main-navigation__item--active`;
+const FILTER_STATISTIC_CLASS = `main-navigation__additional`;
 
-const createFilterMarkup = (item) => {
-  const {name, count, checked} = item;
-
-  const activeClass = checked ? `main-navigation__item--active` : ``;
-  const countMarkup = (name !== FilterType.ALL) ? createSiteMenuCountMarkup(count) : ``;
-
+const createFilterItemAmountMarkup = (count) => {
   return (
-    `<a href="#${name}" class="main-navigation__item ${activeClass}" data-filter-type="${name}">${name} ${countMarkup}</a>`
+    `<span class="main-navigation__item-count">${count}</span>`
   );
 };
 
-const createMenuTemplate = (filters) => {
-  const filtersMarkup = filters.map((it) => createFilterMarkup(it)).join(`\n`);
+const createFilterItemMarkup = (name, count, isChecked) => {
+  const amountMarkup = (name !== FilterType.ALL) ? createFilterItemAmountMarkup(count) : ``;
+
+  return (
+    `<a href="#${name}"
+        class="main-navigation__item ${isChecked ? FILTER_ACTIVE_CLASS : ``}"
+        data-filter-type="${name}">${FilterLabels[name]} ${amountMarkup}</a>`
+  );
+};
+
+const createFilterMarkup = (filters) => {
+  const filtersMarkup = filters.map((it) => createFilterItemMarkup(it.name, it.count, it.isChecked)).join(`\n`);
 
   return (
     `<nav class="main-navigation">
@@ -33,12 +38,18 @@ export default class Filter extends AbstractComponent {
   constructor(filters) {
     super();
 
-    this._currentFilterType = FilterType.ALL;
     this._filters = filters;
+
+    this._activeFilterType = null;
+    this._statisticClickHandler = null;
   }
 
   getTemplate() {
-    return createMenuTemplate(this._filters);
+    return createFilterMarkup(this._filters);
+  }
+
+  setFilterType(filterType) {
+    this._activeFilterType = filterType;
   }
 
   setFilterChangeHandler(handler) {
@@ -52,21 +63,23 @@ export default class Filter extends AbstractComponent {
       const element = evt.target;
       const filterType = element.dataset.filterType;
 
-      if (this._currentFilterType === filterType) {
+      if (this._activeFilterType === filterType) {
         return;
       }
 
-      this._currentFilterType = filterType;
+      this._activeFilterType = filterType;
 
-      this._toggleActiveFilter(element);
       handler(filterType);
     });
   }
 
-  _toggleActiveFilter(element) {
-    this.getElement().querySelectorAll(`.main-navigation__item`).forEach((el) => {
-      el.classList.remove(`main-navigation__item--active`);
-    });
-    element.classList.add(`main-navigation__item--active`);
+  setFilterItemClickHandler(handler) {
+    const controlElements = this.getElement().querySelectorAll(`.${FILTER_CLASS}`);
+    controlElements.forEach((el) => el.addEventListener(`click`, handler));
+  }
+
+  setStatisticClickHandler(handler) {
+    const controlElement = this.getElement().querySelector(`.${FILTER_STATISTIC_CLASS}`);
+    controlElement.addEventListener(`click`, handler);
   }
 }

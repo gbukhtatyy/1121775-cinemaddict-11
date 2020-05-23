@@ -1,41 +1,21 @@
 import AbstractComponent from "./abstract-component.js";
+import {SortType} from "../const.js";
 
-export const SortType = {
-  DATE: `date`,
-  RATING: `rating`,
-  DEFAULT: `default`,
-};
+const SORT_ITEM_ACTIVE_CLASS = `sort__button--active`;
 
-const SORT_ITEMS = [
-  {
-    code: SortType.DEFAULT,
-    title: `Sort by default`
-  }, {
-    code: SortType.DATE,
-    title: `Sort by date`
-  }, {
-    code: SortType.RATING,
-    title: `Sort by rating`
-  }
-];
-
-const createSortingMarkup = (sorting, isChecked) => {
-  const {code, title} = sorting;
-
-  const checkedClass = isChecked ? `sort__button--active` : ``;
+const createSortItemMarkup = (sortType, isActive) => {
+  const activeClass = isActive ? SORT_ITEM_ACTIVE_CLASS : ``;
 
   return (
-    `<li><a href="#" class="sort__button ${checkedClass}" data-sort-type="${code}">${title}</a></li>`
+    `<li><a href="#" class="sort__button ${activeClass}" data-sort-type="${sortType}">Sort by ${sortType}</a></li>`
   );
 };
 
-const createSortingTemplate = (sortings) => {
-  const sortingsMarkup = sortings.map((it, i) => createSortingMarkup(it, i === 0)).join(`\n`);
+const createSortMarkup = (sortings, activeSortType) => {
+  const sortingsMarkup = sortings.map((sortType) => createSortItemMarkup(sortType, activeSortType === sortType)).join(`\n`);
 
   return (
-    `<ul class="sort">
-      ${sortingsMarkup}
-      </ul>`
+    `<ul class="sort">${sortingsMarkup}</ul>`
   );
 };
 
@@ -43,22 +23,21 @@ export default class Sort extends AbstractComponent {
   constructor() {
     super();
 
-    this._currentSortType = SortType.DEFAULT;
+    this._activeSortType = SortType.DEFAULT;
 
-    this._items = SORT_ITEMS;
+    this._sortTypes = [
+      SortType.DEFAULT,
+      SortType.DATE,
+      SortType.RATING
+    ];
   }
 
   getTemplate() {
-    return createSortingTemplate(this._items);
+    return createSortMarkup(this._sortTypes, this._activeSortType);
   }
 
   setSortType(sortType) {
-    this._currentSortType = sortType;
-    this._toggleActiveSort();
-  }
-
-  getSortType() {
-    return this._currentSortType;
+    this._activeSortType = sortType;
   }
 
   setSortTypeChangeHandler(handler) {
@@ -72,24 +51,13 @@ export default class Sort extends AbstractComponent {
       const element = evt.target;
       const sortType = element.dataset.sortType;
 
-      if (this._currentSortType === sortType) {
+      if (this._activeSortType === sortType) {
         return;
       }
 
-      this._currentSortType = sortType;
+      this._activeSortType = sortType;
 
-      this._toggleActiveSort();
-      handler(this._currentSortType);
+      handler(this._activeSortType);
     });
-  }
-
-  _toggleActiveSort() {
-    this.getElement().querySelectorAll(`.sort__button`).forEach((el) => {
-      el.classList.remove(`sort__button--active`);
-    });
-
-    this.getElement()
-      .querySelector(`[data-sort-type=${this._currentSortType}]`)
-      .classList.add(`sort__button--active`);
   }
 }

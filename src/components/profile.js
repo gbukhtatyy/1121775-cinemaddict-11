@@ -1,19 +1,20 @@
 import AbstractComponent from "./abstract-component.js";
 
-const createProfileTemplate = (rating) => {
+const createProfileTemplate = () => {
   return (
     `<section class="header__profile profile">
-          <p class="profile__rating">${rating}</p>
+          <p class="profile__rating"></p>
           <img class="profile__avatar" src="images/bitmap@2x.png" alt="Avatar" width="35" height="35">
       </section>`
   );
 };
 
 export default class Profile extends AbstractComponent {
-  constructor(moviesModel) {
+  constructor(moviesModel, userModel) {
     super();
 
     this._moviesModel = moviesModel;
+    this._userModel = userModel;
 
     this._onDataChange = this._onDataChange.bind(this);
 
@@ -21,33 +22,13 @@ export default class Profile extends AbstractComponent {
   }
 
   getTemplate() {
-    return createProfileTemplate(this.getRatingLabel());
-  }
-
-  getWatchedFilms() {
-    const allMovies = this._moviesModel.getMoviesAll();
-
-    return allMovies.filter((movie) => movie.isWatched).length;
-  }
-
-  getRatingLabel() {
-    const watchedMovies = this.getWatchedFilms();
-
-    switch (true) {
-      case (watchedMovies > 20):
-        return `movie buff`;
-      case (watchedMovies > 10):
-        return `fan`;
-      case (watchedMovies > 0):
-        return `novice`;
-    }
-
-    return ``;
+    return createProfileTemplate();
   }
 
   updateRating() {
     const profileRatingLabel = this.getElement().querySelector(`.profile__rating`);
-    profileRatingLabel.innerHTML = this.getRatingLabel();
+
+    profileRatingLabel.innerHTML = this._userModel.getUserStatus();
   }
 
   _onDataChange() {

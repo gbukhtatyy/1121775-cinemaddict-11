@@ -1,4 +1,3 @@
-
 export default class Movie {
   constructor(data) {
     this.id = data[`id`];
@@ -17,7 +16,7 @@ export default class Movie {
     this.writers = data[`film_info`][`writers`];
     this.actors = data[`film_info`][`actors`];
 
-    this.releaseDate = new Date(data[`film_info`][`release`][`date`]);
+    this.releaseDate = data[`film_info`][`release`][`date`];
     this.releaseCountry = data[`film_info`][`release`][`release_country`];
 
     this.isWatchlist = data[`user_details`][`watchlist`];
@@ -30,7 +29,34 @@ export default class Movie {
 
   toRAW() {
     return {
-      'id': this.id
+      'id': this.id,
+      'film_info': {
+        'title': this.title,
+        'alternative_title': this.alternativeTitle,
+        'description': this.description,
+        'poster': this.poster,
+
+        'genre': this.genres,
+        'age_rating': this.ageRating,
+        'runtime': this.runtime,
+        'total_rating': this.totalRating,
+
+        'director': this.director,
+        'writers': this.writers,
+        'actors': this.actors,
+
+        'release': {
+          'date': this.releaseDate,
+          'release_country': this.releaseCountry
+        }
+      },
+      'user_details': {
+        'watchlist': this.isWatchlist,
+        'favorite': this.isFavorite,
+        'already_watched': this.isWatched,
+        'watching_date': this.watchingDate
+      },
+      'comments': this.comments
     };
   }
 
