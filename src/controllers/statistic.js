@@ -9,8 +9,13 @@ export default class Statistic {
   constructor(container, moviesModel, userModel) {
     this._container = container;
 
+    this._isVisible = false;
     this._moviesModel = moviesModel;
     this._userModel = userModel;
+
+    this._onDateChange = this._onDateChange.bind(this);
+
+    this._moviesModel.setDataChangeHandler(this._onDateChange);
   }
 
   render() {
@@ -18,6 +23,12 @@ export default class Statistic {
     this._statisticComponent = new StatisticComponent();
 
     this._statisticComponent.setUserStatus(this._userModel.getUserStatus());
+
+    if (!this._isVisible) {
+      this._statisticComponent.getElement()
+        .classList
+        .add(HIDDEN_CLASS);
+    }
 
     if (oldStatisticComponent) {
       replace(this._statisticComponent, oldStatisticComponent);
@@ -27,6 +38,7 @@ export default class Statistic {
   }
 
   show() {
+    this._isVisible = true;
     const container = this._statisticComponent.getElement();
     if (container) {
       container.classList.remove(HIDDEN_CLASS);
@@ -34,9 +46,14 @@ export default class Statistic {
   }
 
   hide() {
+    this._isVisible = false;
     const container = this._statisticComponent.getElement();
     if (container) {
       container.classList.add(HIDDEN_CLASS);
     }
+  }
+
+  _onDateChange() {
+    this.render();
   }
 }

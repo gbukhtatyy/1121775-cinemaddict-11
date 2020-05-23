@@ -91,9 +91,6 @@ filterController.render();
 pageController.render({state: AppState.LOADING});
 statisticController.render();
 
-// Hide statistic
-statisticController.hide();
-
 // Render
 Promise.all([
   api.getMovies()
