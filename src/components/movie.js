@@ -1,5 +1,5 @@
 import AbstractComponent from "./abstract-component.js";
-import {generateLengthMarkup} from "../utils/movie.js";
+import {generateLengthMarkup, generateDescriptionMarkup} from "../utils/movie.js";
 
 const createMovieTemplate = (movie) => {
   const {
@@ -17,7 +17,7 @@ const createMovieTemplate = (movie) => {
   const length = generateLengthMarkup(runtime);
   const category = genres.join(`, `);
   const countComments = comments.length;
-
+  const descriptionMarkup = generateDescriptionMarkup(description);
   const buttonClassActive = `film-card__controls-item--active`;
   const classWatchlist = movie.isWatchlist ? buttonClassActive : ``;
   const classWatched = movie.isWatched ? buttonClassActive : ``;
@@ -33,7 +33,7 @@ const createMovieTemplate = (movie) => {
         <span class="film-card__genre">${category}</span>
       </p>
       <img src="${poster}" alt="" class="film-card__poster">
-      <p class="film-card__description">${description}</p>
+      <p class="film-card__description">${descriptionMarkup}</p>
       <a class="film-card__comments">${countComments} comments</a>
       <form class="film-card__controls">
           <button class="film-card__controls-item button film-card__controls-item--add-to-watchlist ${classWatchlist}">Add to watchlist</button>

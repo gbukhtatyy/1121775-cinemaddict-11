@@ -124,7 +124,25 @@ const createMoviePopupTemplate = (movie) => {
               </label>
 
               <div class="film-details__emoji-list">
-                emojiesMarkup
+                <input class="film-details__emoji-item visually-hidden" name="comment-emoji" type="radio" id="emoji-smile" value="smile">
+                <label class="film-details__emoji-label" for="emoji-smile">
+                  <img src="./images/emoji/smile.png" width="30" height="30" alt="emoji">
+                </label>
+
+                <input class="film-details__emoji-item visually-hidden" name="comment-emoji" type="radio" id="emoji-sleeping" value="sleeping">
+                <label class="film-details__emoji-label" for="emoji-sleeping">
+                  <img src="./images/emoji/sleeping.png" width="30" height="30" alt="emoji">
+                </label>
+
+                <input class="film-details__emoji-item visually-hidden" name="comment-emoji" type="radio" id="emoji-puke" value="puke">
+                <label class="film-details__emoji-label" for="emoji-puke">
+                  <img src="./images/emoji/puke.png" width="30" height="30" alt="emoji">
+                </label>
+
+                <input class="film-details__emoji-item visually-hidden" name="comment-emoji" type="radio" id="emoji-angry" value="angry">
+                <label class="film-details__emoji-label" for="emoji-angry">
+                  <img src="./images/emoji/angry.png" width="30" height="30" alt="emoji">
+                </label>
               </div>
             </div>
           </section>
@@ -147,6 +165,21 @@ export default class MoviePopup extends AbstractComponent {
 
   setClickCloseHandler(handler) {
     this.getElement().querySelector(`.film-details__close-btn`)
+      .addEventListener(`click`, handler);
+  }
+
+  setWatchlistButtonClickHandler(handler) {
+    this.getElement().querySelector(`.film-details__control-label--watchlist`)
+      .addEventListener(`click`, handler);
+  }
+
+  setWatchedButtonClickHandler(handler) {
+    this.getElement().querySelector(`.film-details__control-label--watched`)
+      .addEventListener(`click`, handler);
+  }
+
+  setFavoriteButtonClickHandler(handler) {
+    this.getElement().querySelector(`.film-details__control-label--favorite`)
       .addEventListener(`click`, handler);
   }
 }

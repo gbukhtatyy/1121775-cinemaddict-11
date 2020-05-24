@@ -32,10 +32,47 @@ export default class Movie {
     this._movieComponent.setOpenClickHandler(() => {
       this._openFilmPopup();
     });
+    this._movieComponent.setWatchedButtonClickHandler((evt) => {
+      evt.preventDefault();
+      this._onDataChange(this, movie, Object.assign({}, movie, {
+        isWatched: !movie.isWatched,
+      }));
+    });
+    this._movieComponent.setWatchlistButtonClickHandler((evt) => {
+      evt.preventDefault();
+      this._onDataChange(this, movie, Object.assign({}, movie, {
+        isWatchlist: !movie.isWatchlist,
+      }));
+    });
+    this._movieComponent.setFavoriteButtonClickHandler((evt) => {
+      evt.preventDefault();
+      this._onDataChange(this, movie, Object.assign({}, movie, {
+        isFavorite: !movie.isFavorite,
+      }));
+    });
 
     this._moviePopupComponent.setClickCloseHandler(() => {
       this._closeFilmPopup();
     });
+    this._moviePopupComponent.setWatchedButtonClickHandler((evt) => {
+      evt.preventDefault();
+      this._onDataChange(this, movie, Object.assign({}, movie, {
+        isWatched: !movie.isWatched,
+      }));
+    });
+    this._moviePopupComponent.setWatchlistButtonClickHandler((evt) => {
+      evt.preventDefault();
+      this._onDataChange(this, movie, Object.assign({}, movie, {
+        isWatchlist: !movie.isWatchlist,
+      }));
+    });
+    this._moviePopupComponent.setFavoriteButtonClickHandler((evt) => {
+      evt.preventDefault();
+      this._onDataChange(this, movie, Object.assign({}, movie, {
+        isFavorite: !movie.isFavorite,
+      }));
+    });
+
 
     if (oldMovieComponent && oldMoviePopupComponent) {
       replace(this._movieComponent, oldMovieComponent);

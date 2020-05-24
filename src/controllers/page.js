@@ -117,7 +117,7 @@ export default class Page {
     remove(this._loadMoreButtonComponent);
 
     const films = this._moviesModel.getMovies();
-console.log(this._showingMoviesCount, films.length);
+
     if (this._showingMoviesCount >= films.length) {
       return;
     }
@@ -156,6 +156,16 @@ console.log(this._showingMoviesCount, films.length);
   }
 
   _onDataChange(movieController, oldData, newData) {
+    if (oldData === null) {
+      return;
+    } else if (newData === null) {
+      return;
+    } else {
+      const isSuccess = this._moviesModel.updateMovie(oldData.id, newData);
 
+      if (isSuccess) {
+        movieController.render(newData);
+      }
+    }
   }
 }

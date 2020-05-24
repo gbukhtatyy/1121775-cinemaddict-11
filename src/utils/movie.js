@@ -1,5 +1,15 @@
 import moment from 'moment';
 
+const DESCRIPTION_MAX_LENGTH = 140;
+
+export const generateDescriptionMarkup = (description) => {
+  if (description.length <= DESCRIPTION_MAX_LENGTH) {
+    return description;
+  }
+
+  return description.substr(0, DESCRIPTION_MAX_LENGTH - 1) + `...`;
+};
+
 export const generateLengthMarkup = (totalMinutes) => {
   const duration = moment.duration(totalMinutes, `minutes`);
 
