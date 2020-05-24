@@ -1,5 +1,11 @@
 import moment from 'moment';
 
+export const generateLengthMarkup = (totalMinutes) => {
+  const duration = moment.duration(totalMinutes, `minutes`);
+
+  return (`${duration.hours()}h ${duration.minutes()}m`);
+};
+
 export const getTotalDuration = (watchedMovies) => {
   const totalTimeMins = watchedMovies.reduce((total, {runtime}) => {
     return total + runtime;

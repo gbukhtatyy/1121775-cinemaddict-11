@@ -10,6 +10,7 @@ const createPageTemplate = (title, isVisible) => {
   return (
     `<section class="films-list">
       <h2 class="${FILMS_LIST_TITLE_CLASS} ${hiddenClass}">${title}</h2>
+      <div class="films-list__container"></div>
     </section>`
   );
 };
@@ -24,6 +25,10 @@ export default class Movies extends AbstractComponent {
 
   getTemplate() {
     return createPageTemplate(this._title, this._isTitleVisible);
+  }
+
+  getMoviesListElement() {
+    return this.getElement().querySelector(`.films-list__container`);
   }
 
   setTitle(title) {

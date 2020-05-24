@@ -44,6 +44,25 @@ export default class Movies {
     return this._movies.filter((movie) => movie.isWatched);
   }
 
+  getMoviesWithSort() {
+    let sortedMovies = [];
+    const showingMovies = this.getMovies().slice();
+
+    switch (this._activeSortType) {
+      case SortType.DATE:
+        sortedMovies = showingMovies.sort((a, b) => a.releaseDate - b.releaseDate);
+        break;
+      case SortType.RATING:
+        sortedMovies = showingMovies.sort((a, b) => b.totalRating - a.totalRating);
+        break;
+      case SortType.DEFAULT:
+        sortedMovies = showingMovies;
+        break;
+    }
+
+    return sortedMovies;
+  }
+
   getMoviesByPeriod(movies, period) {
     if (period === StatisticFilterType.ALL_TIME) {
       return movies;
