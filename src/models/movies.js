@@ -1,5 +1,5 @@
 import {getMoviesByFilter} from "../utils/filter.js";
-import {FilterType, SortType} from "../const.js";
+import {FilterType, SortType, StatisticFilterType} from "../const.js";
 
 export default class Movies {
   constructor() {
@@ -20,6 +20,7 @@ export default class Movies {
   }
 
   _log() {
+    return;
     console.log(`Filter: `, this._activeFilterType);
     console.log(`Sort: `, this._activeSortType);
     console.log(`Movies: `, this._movies);
@@ -40,7 +41,34 @@ export default class Movies {
   }
 
   getWatchedMovies() {
-    return this._movies.filter((movie) => movie.isWatched).length;
+    return this._movies.filter((movie) => movie.isWatched);
+  }
+
+  getMoviesByPeriod(movies, period) {
+    if (period === StatisticFilterType.ALL_TIME) {
+      return movies;
+    }
+
+    const date = new Date();
+
+    switch (period) {
+      case StatisticFilterType.TODAY:
+        date.setDate(date.getDate() - 1);
+        break;
+      case StatisticFilterType.WEEK:
+        date.setDate(date.getDate() - 7);
+        break;
+      case StatisticFilterType.MONTH:
+        date.setMonth(date.getMonth() - 1);
+        break;
+      case StatisticFilterType.YEAR:
+        date.setFullYear(date.getFullYear() - 1);
+        break;
+      default:
+        return movies;
+    }
+
+    return movies.filter((item) => item.watchingDate > date);
   }
 
   getFilterType() {

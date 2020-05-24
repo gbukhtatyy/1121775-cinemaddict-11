@@ -16,7 +16,7 @@ export default class User {
   }
 
   _calculateUserStatus() {
-    const watchedMovies = this._moviesModel.getWatchedMovies();
+    const watchedMovies = this._moviesModel.getWatchedMovies().length;
 
     switch (true) {
       case (watchedMovies > 20):
