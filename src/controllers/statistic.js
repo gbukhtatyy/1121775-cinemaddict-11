@@ -48,12 +48,16 @@ export default class Statistic {
 
   show() {
     this._isVisible = true;
-    this._statisticComponent.setFilterType(StatisticFilterType.ALL_TIME);
+
+    this._activeFilterType = StatisticFilterType.ALL_TIME;
+    this._statisticComponent.setFilterType(this._activeFilterType);
 
     const container = this._statisticComponent.getElement();
     if (container) {
       container.classList.remove(HIDDEN_CLASS);
     }
+
+    this.render();
   }
 
   hide() {
