@@ -5,6 +5,9 @@ import LoadMoreButtonComponent from "../components/load-more-button.js";
 // Import controllers
 import MovieController from "../controllers/movie.js";
 
+// Import models
+import MovieModel from "../models/movie.js"
+
 // Import constants and utils
 import {AppState, AppPageTitle} from "../const.js";
 import {RenderPosition, HIDDEN_CLASS, render, replace, remove} from "../utils/render.js";
@@ -23,7 +26,8 @@ const renderMovies = (container, movies, onDataChange, onViewChange) => {
 };
 
 export default class Page {
-  constructor(container, moviesModel) {
+  constructor(api, container, moviesModel) {
+    this._api = api;
     this._container = container;
     this._moviesModel = moviesModel;
 
@@ -155,17 +159,36 @@ export default class Page {
     this._moviesModel.setSortType(SortType.DEFAULT);
   }
 
+  _updateMovie(movieController, movieId, newData) {
+    const isSuccess = this._moviesModel.updateMovie(movieId, newData);
+
+    if (isSuccess) {
+      movieController.render(newData);
+    }
+  }
+
   _onDataChange(movieController, oldData, newData) {
+    const movie = movieController.getMovie();
+    const {comments, commentsData} = movie;
+
     if (oldData === null) {
       return;
     } else if (newData === null) {
-      return;
-    } else {
-      const isSuccess = this._moviesModel.updateMovie(oldData.id, newData);
+      const deletedCommentId = oldData;
 
-      if (isSuccess) {
-        movieController.render(newData);
-      }
+      const newComments = comments.filter((commentId) => commentId !== deletedCommentId);
+      const newCommentsData = commentsData.filter((comment) => comment.id !== deletedCommentId);
+
+      const newMovieData = MovieModel.clone(movie);
+
+      newMovieData.comments = newComments;
+      newMovieData.commentsData = newCommentsData;
+
+      this._api
+        .deleteComment(deletedCommentId)
+        .then(() => this._updateMovie(movieController, movie.id, newMovieData));
+    } else {
+      this._updateMovie(movieController, movie.id, newData);
     }
   }
 }

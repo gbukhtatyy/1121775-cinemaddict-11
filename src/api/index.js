@@ -21,25 +21,40 @@ export default class Api {
     this._authorization = authorization;
   }
 
-  /**
-   * Получение информации о фильмах
-   * @return {Array}
-   * @return {Promise}
-   */
+  _getCommentsPromise(movieJson) {
+    return new Promise((resolve, reject) => {
+      this._load(`comments/${movieJson.id}`)
+        .then((response) => response.json())
+        .then((commentsJson) => {
+          movieJson[`comments_data`] = commentsJson;
+
+          resolve(movieJson);
+        })
+        .catch((error) => {
+          reject(error);
+        });
+    });
+  }
+
   getMovies() {
     return this._load(`movies`)
       .then((response) => response.json())
+      .then((moviesJson) => {
+        const commentsPromises = moviesJson.reduce((prev, movieJson) => {
+          const commentPromise = this._getCommentsPromise(movieJson);
+          prev.push(commentPromise);
+          return prev;
+        }, []);
+
+        return Promise.all(commentsPromises);
+      })
       .then(Movie.parseMovies);
   }
 
-  /**
-   * Выполнение запроса к апи сервиса
-   * @param {string} url
-   * @param {Method} method
-   * @param {array} body
-   * @param {array} headers
-   * @return {Promise}
-   */
+  deleteComment(commentId) {
+    return this._load(`comments/${commentId}`, Method.DELETE);
+  }
+
   _load(url, method = Method.GET, body = null, headers = new Headers()) {
     headers.append(`Authorization`, this._authorization);
 

@@ -14,6 +14,7 @@ export default class Movie {
     this._onDataChange = onDataChange;
     this._onViewChange = onViewChange;
 
+    this._movie = null;
     this._mode = Mode.DEFAULT;
     this._movieComponent = null;
     this._moviePopupComponent = null;
@@ -22,6 +23,7 @@ export default class Movie {
   }
 
   render(movie) {
+    this._movie = movie;
     const oldMovieComponent = this._movieComponent;
     const oldMoviePopupComponent = this._moviePopupComponent;
 
@@ -72,7 +74,9 @@ export default class Movie {
         isFavorite: !movie.isFavorite,
       }));
     });
-
+    this._moviePopupComponent.setDeleteCommentHandler((commentId) => {
+      this._onDataChange(this, commentId, null);
+    });
 
     if (oldMovieComponent && oldMoviePopupComponent) {
       replace(this._movieComponent, oldMovieComponent);
@@ -86,6 +90,10 @@ export default class Movie {
     if (this._mode === Mode.POPUP) {
       this._closeFilmPopup();
     }
+  }
+
+  getMovie() {
+    return this._movie;
   }
 
   _openFilmPopup() {

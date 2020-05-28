@@ -25,9 +25,11 @@ export default class Movie {
     this.watchingDate = new Date(data[`user_details`][`watching_date`]);
 
     this.comments = data[`comments`];
+    this.commentsData = data[`comments_data`];
   }
 
   toRAW() {
+    console.log(`movies - toRAW`, this);
     return {
       'id': this.id,
       'film_info': {
@@ -46,7 +48,7 @@ export default class Movie {
         'actors': this.actors,
 
         'release': {
-          'date': this.releaseDate.toISOString(),
+          'date': this.releaseDate ? this.releaseDate.toISOString() : null,
           'release_country': this.releaseCountry
         }
       },
@@ -54,9 +56,10 @@ export default class Movie {
         'watchlist': this.isWatchlist,
         'favorite': this.isFavorite,
         'already_watched': this.isWatched,
-        'watching_date': this.watchedDate.toISOString()
+        'watching_date': this.watchedDate ? this.watchedDate.toISOString() : null
       },
-      'comments': this.comments
+      'comments': this.comments,
+      'comments_data': this.commentsData
     };
   }
 

@@ -2,8 +2,9 @@ import {getMoviesByFilter} from "../utils/filter.js";
 import {FilterType, SortType, StatisticFilterType} from "../const.js";
 
 export default class Movies {
-  constructor() {
+  constructor(api) {
     this._movies = [];
+    this._api = api;
 
     this._activeFilterType = FilterType.ALL;
     this._activeSortType = SortType.DEFAULT;
@@ -124,7 +125,7 @@ export default class Movies {
 
   updateMovie(id, movie) {
     const index = this._movies.findIndex((it) => it.id === id);
-
+console.log(id, movie, index);
     if (index === -1) {
       return false;
     }
@@ -134,6 +135,10 @@ export default class Movies {
     this._callHandlers(this._dataChangeHandlers);
 
     return true;
+  }
+
+  deleteComment(movieId, commentId) {
+    return this._api.deleteComment(movieId, commentId);
   }
 
   _callHandlers(handlers) {

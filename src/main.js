@@ -45,7 +45,7 @@ const pageComponent = new PageComponent();
 const filterController = new FilterController(siteMainElement, moviesModel);
 const sortController = new SortController(siteMainElement, moviesModel);
 
-const pageController = new PageController(pageComponent, moviesModel);
+const pageController = new PageController(api, pageComponent, moviesModel);
 const statisticController = new StatisticController(siteMainElement, moviesModel, userModel);
 
 // Define switch functions
