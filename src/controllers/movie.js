@@ -83,6 +83,7 @@ export default class Movie {
       replace(this._movieComponent, oldMovieComponent);
       replace(this._moviePopupComponent, oldMoviePopupComponent);
 
+      oldMoviePopupComponent.removeSubmitFormHandler();
       this._moviePopupComponent.setSubmitFormHandler((newCommentData) => {
         this._onDataChange(this, null, newCommentData);
       });

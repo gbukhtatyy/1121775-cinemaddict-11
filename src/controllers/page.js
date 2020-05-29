@@ -40,11 +40,9 @@ export default class Page {
     this._onDataChange = this._onDataChange.bind(this);
     this._onViewChange = this._onViewChange.bind(this);
     this._onSortTypeChange = this._onSortTypeChange.bind(this);
-    this._onFilterTypeChange = this._onFilterTypeChange.bind(this);
     this._onLoadMoreButtonClick = this._onLoadMoreButtonClick.bind(this);
 
     this._moviesModel.setSortChangeHandler(this._onSortTypeChange);
-    this._moviesModel.setFilterChangeHandler(this._onFilterTypeChange);
   }
 
   render(params) {
@@ -62,15 +60,10 @@ export default class Page {
         this._moviesComponent.setTitleVisible(true);
         break;
       case AppState.EMPTY:
-        this._moviesComponent.setTitle(AppPageTitle.EMPTY);
-        this._moviesComponent.setTitleVisible(true);
+        this._showEmptyTitle();
         break;
       default:
-        this._moviesComponent.setTitle(AppPageTitle.DEFAULT);
-        this._moviesComponent.setTitleVisible(false);
-
         this._updateMovies();
-
         break;
     }
 
@@ -79,8 +72,6 @@ export default class Page {
     } else {
       render(container, this._moviesComponent, RenderPosition.BEFOREEND);
     }
-
-    this._renderLoadMoreButton();
   }
 
   show() {
@@ -97,6 +88,18 @@ export default class Page {
     }
   }
 
+  _showEmptyTitle() {
+    console.log(`_showEmptyTitle`);
+    this._moviesComponent.setTitle(AppPageTitle.EMPTY);
+    this._moviesComponent.setTitleVisible(true);
+  }
+
+  _showDefaultTitle() {
+    console.log(`_showDefaultTitle`, this._moviesComponent);
+    this._moviesComponent.setTitle(AppPageTitle.DEFAULT);
+    this._moviesComponent.setTitleVisible(false);
+  }
+
   _renderFilms(movies) {
     const moviesContainer = this._moviesComponent.getMoviesListElement();
     const newMovies = renderMovies(moviesContainer, movies, this._onDataChange, this._onViewChange);
@@ -105,11 +108,20 @@ export default class Page {
 
   _updateMovies() {
     const movies = this._moviesModel.getMoviesWithSort();
+console.log(`_updateMovies`, movies.length);
+    if (movies.length > 0) {
+      this._showDefaultTitle();
+    }
+    else {
+      console.log(`_updateMovies`);
+      this._showEmptyTitle();
+    }
 
     this._removeFilms();
     this._renderFilms(movies.slice(0, SHOWING_FILMS_COUNT_ON_START));
 
     this._renderLoadMoreButton();
+
   }
 
   _removeFilms() {
@@ -149,14 +161,9 @@ export default class Page {
   }
 
   _onSortTypeChange() {
+    console.log(`_onSortTypeChange`);
     this._showingMoviesCount = SHOWING_FILMS_COUNT_ON_START;
     this._updateMovies();
-
-    this._renderLoadMoreButton();
-  }
-
-  _onFilterTypeChange() {
-    this._moviesModel.setSortType(SortType.DEFAULT);
   }
 
   _updateMovie(movieController, movieId, newData) {
@@ -172,9 +179,9 @@ export default class Page {
 
     if (oldData === null) {
       this._api.addComment(movie.id, newData)
-      .then((movieModel) => {
-        this._updateMovie(movieController, movie.id, movieModel);
-      });
+        .then((movieModel) => {
+          this._updateMovie(movieController, movie.id, movieModel);
+        });
     } else if (newData === null) {
       const deletedCommentId = oldData;
 
