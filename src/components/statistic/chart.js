@@ -28,8 +28,7 @@ export default class StatisticChart extends AbstractComponent {
 
     canvasElement.height = BAR_HEIGHT * labels.length;
 
-    // eslint-disable-next-line no-new
-    new Chart(canvasElement, {
+    return new Chart(canvasElement, {
       plugins: [ChartDataLabels],
       type: `horizontalBar`,
       data: {
