@@ -6,7 +6,7 @@ import LoadMoreButtonComponent from "../components/load-more-button.js";
 import MovieController from "../controllers/movie.js";
 
 // Import models
-import MovieModel from "../models/movie.js"
+import MovieModel from "../models/movie.js";
 
 // Import constants and utils
 import {AppState, AppPageTitle} from "../const.js";
