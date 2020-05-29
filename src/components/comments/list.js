@@ -1,4 +1,5 @@
 import AbstractComponent from "../abstract-component.js";
+import {generateRelativeDate} from "../../utils/movie";
 
 const ButtonText = {
   DEFAULT: `Delete`,
@@ -15,7 +16,7 @@ const createCommentListItemMarkup = (comment) => {
         <p class="film-details__comment-text">${comment.comment}</p>
         <p class="film-details__comment-info">
           <span class="film-details__comment-author">${comment.author}</span>
-          <span class="film-details__comment-day">2 days ago</span>
+          <span class="film-details__comment-day">${generateRelativeDate(comment.date)}</span>
           <button class="film-details__comment-delete" data-comment-id="${comment.id}">${ButtonText.DEFAULT}</button>
         </p>
       </div>

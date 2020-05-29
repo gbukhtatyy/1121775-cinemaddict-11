@@ -2,6 +2,18 @@ import moment from 'moment';
 
 const DESCRIPTION_MAX_LENGTH = 140;
 
+export const generateRelativeDate = (date) => {
+  if (!date) {
+    return ``;
+  }
+
+  if (!(date instanceof Date)) {
+    date = new Date(date);
+  }
+
+  return moment(date).fromNow();
+};
+
 export const generateDescriptionMarkup = (description) => {
   if (description.length <= DESCRIPTION_MAX_LENGTH) {
     return description;

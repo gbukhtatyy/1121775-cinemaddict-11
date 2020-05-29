@@ -161,7 +161,6 @@ export default class Page {
 
   _updateMovie(movieController, movieId, newData) {
     const isSuccess = this._moviesModel.updateMovie(movieId, newData);
-console.log(`isSuccess`, isSuccess);
     if (isSuccess) {
       movieController.render(newData);
     }

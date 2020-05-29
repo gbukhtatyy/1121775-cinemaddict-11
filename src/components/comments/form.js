@@ -116,8 +116,6 @@ export default class Form extends AbstractComponent {
           textareaElement.focus();
         }
 
-        console.log(emojiLabelElement);
-
         if (!value || !this._selectedEmoji) {
           return;
         }
@@ -146,7 +144,6 @@ export default class Form extends AbstractComponent {
   }
 
   removeSubmitFormHandler() {
-    console.log(`removeSubmitFormHandler`, this._pressedButtons, this._isCommentSending);
     this._isCommentSending = false;
     document.removeEventListener(`keyup`, this._keyUpHandler);
     document.removeEventListener(`keydown`, this._submitGeneratedHandler);

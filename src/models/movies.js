@@ -12,19 +12,6 @@ export default class Movies {
     this._dataChangeHandlers = [];
     this._filterChangeHandlers = [];
     this._sortChangeHandlers = [];
-
-    this._log = this._log.bind(this);
-
-    this.setDataChangeHandler(this._log);
-    this.setFilterChangeHandler(this._log);
-    this.setSortChangeHandler(this._log);
-  }
-
-  _log() {
-    return;
-    console.log(`Filter: `, this._activeFilterType);
-    console.log(`Sort: `, this._activeSortType);
-    console.log(`Movies: `, this._movies);
   }
 
   getMoviesAll() {
@@ -125,7 +112,7 @@ export default class Movies {
 
   updateMovie(id, movie) {
     const index = this._movies.findIndex((it) => it.id === id);
-console.log(id, movie, index);
+
     if (index === -1) {
       return false;
     }
