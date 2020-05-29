@@ -1,11 +1,11 @@
 import AbstractComponent from "./abstract-component.js";
-import {HIDDEN_CLASS} from "../utils/render.js";
+import {ClassName} from "../utils/render.js";
 import {AppPageTitle} from "../const.js";
 
 const FILMS_LIST_TITLE_CLASS = `films-list__title`;
 
 const createPageTemplate = (title, isVisible) => {
-  const hiddenClass = isVisible ? `` : HIDDEN_CLASS;
+  const hiddenClass = isVisible ? `` : ClassName.HIDDEN;
 
   return (
     `<section class="films-list">

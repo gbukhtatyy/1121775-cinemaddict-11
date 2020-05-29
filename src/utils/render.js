@@ -1,4 +1,9 @@
-export const HIDDEN_CLASS = `visually-hidden`;
+export const ClassName = {
+  REQUIRED: `required`,
+  SHAKE: `shake`,
+  DISABLED: `disabled`,
+  HIDDEN: `visually-hidden`
+};
 
 export const RenderPosition = {
   BEFORE: `before`,

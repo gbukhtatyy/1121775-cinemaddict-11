@@ -1,6 +1,6 @@
+import he from 'he';
 import AbstractComponent from "../abstract-component.js";
-
-import {createElement} from "../../utils/render";
+import {ClassName, createElement} from "../../utils/render";
 
 const EmojiType = {
   SMILE: `smile`,
@@ -57,6 +57,21 @@ const createFormMarkup = () => {
 };
 
 export default class Form extends AbstractComponent {
+  constructor() {
+    super();
+
+    this._isCommentSending = false;
+    this._selectedEmoji = null;
+
+    this._textareaElement = null;
+
+    this._submitHandler = null;
+    this._submitGeneratedHandler = null;
+
+    this._pressedButtons = {};
+
+  }
+
   getTemplate() {
     return createFormMarkup();
   }
@@ -70,14 +85,88 @@ export default class Form extends AbstractComponent {
     return this._element;
   }
 
+  _getSubmitHandler(handler) {
+    const textareaElement = this.getElement().querySelector(`.film-details__comment-input`);
+    const emojiLabelElement = this.getElement().querySelector(`.film-details__add-emoji-label`);
+
+    return (event) => {
+      if (this._isCommentSending) {
+        return;
+      }
+
+      if (event.key === `Enter`) {
+        this._pressedButtons.enter = true;
+      } else if (event.key === `Control` || event.key === `Meta`) {
+        this._pressedButtons.ctrl = true;
+      }
+
+      if (this._pressedButtons.enter && this._pressedButtons.ctrl) {
+        this._pressedButtons = {};
+        textareaElement.classList.remove(ClassName.REQUIRED);
+        emojiLabelElement.classList.remove(ClassName.REQUIRED);
+
+        const value = textareaElement.value.trim();
+
+        if (!this._selectedEmoji) {
+          emojiLabelElement.classList.add(ClassName.REQUIRED);
+        }
+
+        if (!value) {
+          textareaElement.classList.add(ClassName.REQUIRED);
+          textareaElement.focus();
+        }
+
+        console.log(emojiLabelElement);
+
+        if (!value || !this._selectedEmoji) {
+          return;
+        }
+
+        textareaElement.classList.remove(ClassName.REQUIRED);
+        emojiLabelElement.classList.remove(ClassName.REQUIRED);
+
+        this._isCommentSending = true;
+
+        handler({
+          text: he.encode(value),
+          emoji: this._selectedEmoji,
+          date: new Date()
+        });
+      }
+
+    };
+  }
+
+  setSubmitHandler(handler) {
+    this._submitHandler = handler;
+    this._submitGeneratedHandler = this._getSubmitHandler(handler);
+
+    document.addEventListener(`keydown`, this._submitGeneratedHandler);
+    document.addEventListener(`keyup`, this._keyUpHandler);
+  }
+
+  removeSubmitFormHandler() {
+    console.log(`removeSubmitFormHandler`, this._pressedButtons, this._isCommentSending);
+    this._isCommentSending = false;
+    document.removeEventListener(`keyup`, this._keyUpHandler);
+    document.removeEventListener(`keydown`, this._submitGeneratedHandler);
+  }
+
   _subscribeOnEvents() {
+    this._isCommentSending = false;
+
     const element = this.getElement();
     const elementEmoji = element.querySelector(`.film-details__add-emoji-label`);
 
     element.querySelectorAll(`[name="comment-emoji"]`).forEach((el) => {
       el.addEventListener(`change`, (evt) => {
+        this._selectedEmoji = evt.target.value;
         elementEmoji.innerHTML = createEmojiImgMarkup(evt.target.value, EMOJI_SIZE_BIG);
       });
     });
+  }
+
+  _keyUpHandler() {
+    this._pressedButtons = {};
   }
 }

@@ -1075,3 +1075,6 @@ button {
   padding-top: 50px;
   padding-bottom: 50px;
 }
+.required {
+  box-shadow: 0 0 5px red, 0 0 0 1px red inset;
+}

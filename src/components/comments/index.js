@@ -42,4 +42,12 @@ export default class Comments extends AbstractComponent {
   setDeleteCommentHandler(handler) {
     this._commentsListComponent.setDeleteClickHandler(handler);
   }
+
+  setSubmitFormHandler(handler) {
+    this._commentsFormComponent.setSubmitHandler(handler);
+  }
+
+  removeSubmitFormHandler() {
+    this._commentsFormComponent.removeSubmitFormHandler();
+  }
 }

@@ -2,7 +2,7 @@
 import StatisticComponent from "../components/statistic";
 
 // Import constants and utils
-import {HIDDEN_CLASS} from "../utils/render.js";
+import {ClassName} from "../utils/render.js";
 import {RenderPosition, render, replace} from "../utils/render.js";
 import {getTotalDuration, getGenreFromWatched} from "../utils/movie.js";
 import {StatisticFilterType} from "../const.js";
@@ -36,7 +36,7 @@ export default class Statistic {
     if (!this._isVisible) {
       this._statisticComponent.getElement()
         .classList
-        .add(HIDDEN_CLASS);
+        .add(ClassName.HIDDEN);
     }
 
     if (oldStatisticComponent) {
@@ -54,7 +54,7 @@ export default class Statistic {
 
     const container = this._statisticComponent.getElement();
     if (container) {
-      container.classList.remove(HIDDEN_CLASS);
+      container.classList.remove(ClassName.HIDDEN);
     }
 
     this.render();
@@ -64,7 +64,7 @@ export default class Statistic {
     this._isVisible = false;
     const container = this._statisticComponent.getElement();
     if (container) {
-      container.classList.add(HIDDEN_CLASS);
+      container.classList.add(ClassName.HIDDEN);
     }
   }
 

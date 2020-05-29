@@ -29,7 +29,6 @@ export default class Movie {
   }
 
   toRAW() {
-    console.log(`movies - toRAW`, this);
     return {
       'id': this.id,
       'film_info': {
@@ -63,7 +62,18 @@ export default class Movie {
     };
   }
 
+  static commentToRaw({id, author, text: comment, emoji: emotion, date}) {
+    return {
+      id,
+      author,
+      comment,
+      emotion,
+      date: date.toISOString()
+    };
+  }
+
   static parseMovie(data) {
+    console.log(data);
     return new Movie(data);
   }
 

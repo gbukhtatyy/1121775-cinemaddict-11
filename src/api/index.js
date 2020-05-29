@@ -22,6 +22,7 @@ export default class Api {
   }
 
   _getCommentsPromise(movieJson) {
+    console.log(`_getCommentsPromise`, movieJson);
     return new Promise((resolve, reject) => {
       this._load(`comments/${movieJson.id}`)
         .then((response) => response.json())
@@ -49,6 +50,21 @@ export default class Api {
         return Promise.all(commentsPromises);
       })
       .then(Movie.parseMovies);
+  }
+
+  addComment(movieId, commentData) {
+    const rawCommentData = Movie.commentToRaw(commentData);
+    return this._load(`comments/${movieId}`, Method.POST, JSON.stringify(rawCommentData), new Headers({'Content-Type': `application/json`}))
+      .then((response) => response.json())
+      .then((movieJson) => {
+        const newMovie = movieJson.movie;
+        console.log(`movieJson`, movieJson);
+        newMovie[`comments_data`] = movieJson.comments;
+        newMovie[`comments`] = movieJson.comments.map((it)=>it.id);
+        console.log(`newMovie`, newMovie);
+        return newMovie;
+      })
+      .then(Movie.parseMovie);
   }
 
   deleteComment(commentId) {

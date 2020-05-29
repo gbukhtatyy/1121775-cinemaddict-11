@@ -78,9 +78,14 @@ export default class Movie {
       this._onDataChange(this, commentId, null);
     });
 
+
     if (oldMovieComponent && oldMoviePopupComponent) {
       replace(this._movieComponent, oldMovieComponent);
       replace(this._moviePopupComponent, oldMoviePopupComponent);
+
+      this._moviePopupComponent.setSubmitFormHandler((newCommentData) => {
+        this._onDataChange(this, null, newCommentData);
+      });
     } else {
       render(container, this._movieComponent, RenderPosition.BEFOREEND);
     }
@@ -102,6 +107,10 @@ export default class Movie {
     bodyElement.appendChild(this._moviePopupComponent.getElement());
     document.addEventListener(`keydown`, this._onEscKeyDown);
     this._mode = Mode.POPUP;
+
+    this._moviePopupComponent.setSubmitFormHandler((newCommentData) => {
+      this._onDataChange(this, null, newCommentData);
+    });
   }
 
   _closeFilmPopup() {
@@ -109,6 +118,8 @@ export default class Movie {
     bodyElement.removeChild(this._moviePopupComponent.getElement());
     document.removeEventListener(`keydown`, this._onEscKeyDown);
     this._mode = Mode.DEFAULT;
+
+    this._moviePopupComponent.removeSubmitFormHandler();
   }
 
   _onEscKeyDown(evt) {

@@ -10,7 +10,7 @@ import MovieModel from "../models/movie.js"
 
 // Import constants and utils
 import {AppState, AppPageTitle} from "../const.js";
-import {RenderPosition, HIDDEN_CLASS, render, replace, remove} from "../utils/render.js";
+import {RenderPosition, ClassName, render, replace, remove} from "../utils/render.js";
 import {SortType} from "../const.js";
 
 const SHOWING_FILMS_COUNT_ON_START = 5;
@@ -86,14 +86,14 @@ export default class Page {
   show() {
     const container = this._container.getElement();
     if (container) {
-      container.classList.remove(HIDDEN_CLASS);
+      container.classList.remove(ClassName.HIDDEN);
     }
   }
 
   hide() {
     const container = this._container.getElement();
     if (container) {
-      container.classList.add(HIDDEN_CLASS);
+      container.classList.add(ClassName.HIDDEN);
     }
   }
 
@@ -161,7 +161,7 @@ export default class Page {
 
   _updateMovie(movieController, movieId, newData) {
     const isSuccess = this._moviesModel.updateMovie(movieId, newData);
-
+console.log(`isSuccess`, isSuccess);
     if (isSuccess) {
       movieController.render(newData);
     }
@@ -172,7 +172,10 @@ export default class Page {
     const {comments, commentsData} = movie;
 
     if (oldData === null) {
-      return;
+      this._api.addComment(movie.id, newData)
+      .then((movieModel) => {
+        this._updateMovie(movieController, movie.id, movieModel);
+      });
     } else if (newData === null) {
       const deletedCommentId = oldData;
 

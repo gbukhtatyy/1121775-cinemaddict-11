@@ -1,5 +1,5 @@
 import SortComponent from "../components/sort.js";
-import {RenderPosition, HIDDEN_CLASS, render, replace} from "../utils/render.js";
+import {RenderPosition, ClassName, render, replace} from "../utils/render.js";
 import {SortType} from "../const.js";
 
 export default class SortController {
@@ -34,13 +34,13 @@ export default class SortController {
 
   show() {
     if (this._sortComponent) {
-      this._sortComponent.getElement().classList.remove(HIDDEN_CLASS);
+      this._sortComponent.getElement().classList.remove(ClassName.HIDDEN);
     }
   }
 
   hide() {
     if (this._sortComponent) {
-      this._sortComponent.getElement().classList.add(HIDDEN_CLASS);
+      this._sortComponent.getElement().classList.add(ClassName.HIDDEN);
     }
   }
 
