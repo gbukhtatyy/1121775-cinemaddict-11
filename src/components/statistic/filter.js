@@ -30,8 +30,8 @@ const createStatisticFilterItemMarkup = (code, name, isChecked) => {
   return (
     `<input type="radio" class="statistic__filters-input visually-hidden" name="statistic-filter" id="statistic-${code}" value="${code}" ${checkedAttribute}>
     <label for="statistic-${code}" class="statistic__filters-label">${name}</label>`
-  )
-}
+  );
+};
 
 const createStatisticFilterMarkup = (activeFilter) => {
   const filtersMarkup = FILTER_ITEMS_DATA.map((filter) => createStatisticFilterItemMarkup(filter.code, filter.name, activeFilter === filter.code)).join(`\n`);
