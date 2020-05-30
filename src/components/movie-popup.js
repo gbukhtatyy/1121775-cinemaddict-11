@@ -6,6 +6,9 @@ import CommentsComponent from "./comments/index.js";
 import {generateLengthMarkup} from "../utils/movie.js";
 import {createElement, render, RenderPosition} from "../utils/render.js";
 
+const GENRE_LABEL = `Genre`;
+const GENRES_LABEL = `Genres`;
+
 const createGenreMarkup = (genre) => {
   return (
     `<span class="film-details__genre">${genre}</span>`
@@ -25,7 +28,8 @@ const createMoviePopupTemplate = (movie) => {
     writers,
     actors,
     releaseDate,
-    releaseCountry
+    releaseCountry,
+    ageRating
   } = movie;
 
   const length = generateLengthMarkup(runtime);
@@ -33,7 +37,9 @@ const createMoviePopupTemplate = (movie) => {
   const actorsContent = actors.join(`, `);
 
   const releaseDateMarkup = moment(releaseDate).format(`DD MMMM YYYY`);
+  const genresLabelMarkup = genres.length > 1 ? GENRES_LABEL : GENRE_LABEL;
   const genresMarkup = genres.map((genre) => createGenreMarkup(genre)).join(`\n`);
+  const ageRatingMarkup = `${ageRating}+`;
 
   const checkedWatchlist = movie.isWatchlist ? `checked` : ``;
   const checkedWatched = movie.isWatched ? `checked` : ``;
@@ -50,7 +56,7 @@ const createMoviePopupTemplate = (movie) => {
             <div class="film-details__poster">
               <img class="film-details__poster-img" src="${poster}" alt="${title}">
 
-              <p class="film-details__age">18+</p>
+              <p class="film-details__age">${ageRatingMarkup}</p>
             </div>
 
             <div class="film-details__info">
@@ -91,7 +97,7 @@ const createMoviePopupTemplate = (movie) => {
                   <td class="film-details__cell">${releaseCountry}</td>
                 </tr>
                 <tr class="film-details__row">
-                  <td class="film-details__term">Genres</td>
+                  <td class="film-details__term">${genresLabelMarkup}</td>
                   <td class="film-details__cell">${genresMarkup}</td>
                 </tr>
               </tbody></table>
