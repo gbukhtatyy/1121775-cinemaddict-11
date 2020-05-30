@@ -11,7 +11,6 @@ import MovieModel from "../models/movie.js";
 // Import constants and utils
 import {AppState, AppPageTitle} from "../const.js";
 import {RenderPosition, ClassName, render, replace, remove} from "../utils/render.js";
-import {SortType} from "../const.js";
 
 const SHOWING_FILMS_COUNT_ON_START = 5;
 const SHOWING_FILMS_COUNT_BY_BUTTON = 5;
@@ -89,13 +88,11 @@ export default class Page {
   }
 
   _showEmptyTitle() {
-    console.log(`_showEmptyTitle`);
     this._moviesComponent.setTitle(AppPageTitle.EMPTY);
     this._moviesComponent.setTitleVisible(true);
   }
 
   _showDefaultTitle() {
-    console.log(`_showDefaultTitle`, this._moviesComponent);
     this._moviesComponent.setTitle(AppPageTitle.DEFAULT);
     this._moviesComponent.setTitleVisible(false);
   }
@@ -108,12 +105,9 @@ export default class Page {
 
   _updateMovies() {
     const movies = this._moviesModel.getMoviesWithSort();
-console.log(`_updateMovies`, movies.length);
     if (movies.length > 0) {
       this._showDefaultTitle();
-    }
-    else {
-      console.log(`_updateMovies`);
+    } else {
       this._showEmptyTitle();
     }
 
@@ -161,7 +155,6 @@ console.log(`_updateMovies`, movies.length);
   }
 
   _onSortTypeChange() {
-    console.log(`_onSortTypeChange`);
     this._showingMoviesCount = SHOWING_FILMS_COUNT_ON_START;
     this._updateMovies();
   }

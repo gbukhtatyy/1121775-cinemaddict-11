@@ -54,8 +54,7 @@ export default class Movies extends AbstractComponent {
 
     if (this._isTitleVisible) {
       titleElement.classList.remove(ClassName.HIDDEN);
-    }
-    else {
+    } else {
       titleElement.classList.add(ClassName.HIDDEN);
     }
   }

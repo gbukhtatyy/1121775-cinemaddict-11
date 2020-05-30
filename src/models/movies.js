@@ -52,10 +52,6 @@ export default class Movies {
   }
 
   getMoviesByPeriod(movies, period) {
-    if (period === StatisticFilterType.ALL_TIME) {
-      return movies;
-    }
-
     const date = new Date();
 
     switch (period) {

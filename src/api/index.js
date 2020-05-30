@@ -52,7 +52,7 @@ export default class Api {
   }
 
   addComment(movieId, commentData) {
-    const rawCommentData = Movie.commentToRaw(commentData);
+    const rawCommentData = Movie.convertCommentToRaw(commentData);
     return this._load(`comments/${movieId}`, Method.POST, JSON.stringify(rawCommentData), new Headers({'Content-Type': `application/json`}))
       .then((response) => response.json())
       .then((movieJson) => {

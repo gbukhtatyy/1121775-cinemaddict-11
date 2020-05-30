@@ -28,7 +28,7 @@ export default class Movie {
     this.commentsData = data[`comments_data`];
   }
 
-  toRAW() {
+  convertToRAW() {
     return {
       'id': this.id,
       'film_info': {
@@ -62,7 +62,7 @@ export default class Movie {
     };
   }
 
-  static commentToRaw({id, author, text: comment, emoji: emotion, date}) {
+  static convertCommentToRaw({id, author, text: comment, emoji: emotion, date}) {
     return {
       id,
       author,
@@ -81,6 +81,6 @@ export default class Movie {
   }
 
   static clone(movie) {
-    return new Movie(movie.toRAW());
+    return new Movie(movie.convertToRAW());
   }
 }
