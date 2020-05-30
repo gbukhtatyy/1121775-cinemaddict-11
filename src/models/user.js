@@ -4,7 +4,6 @@ export default class User {
 
     this._user = null;
     this._user = {
-      avatar: `./images/bitmap@2x.png`,
       status: ``
     };
 

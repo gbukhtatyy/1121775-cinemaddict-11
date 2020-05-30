@@ -12,11 +12,6 @@ export const RenderPosition = {
   AFTEREND: `afterend`
 };
 
-/**
- * Create a Dom Element Based on a Template
- * @param {String} template
- * @return {Element}
- */
 export const createElement = (template) => {
   const newElement = document.createElement(`div`);
   newElement.innerHTML = template;
@@ -24,12 +19,6 @@ export const createElement = (template) => {
   return newElement.firstChild;
 };
 
-/**
- * Rendering element to container
- * @param {Element} container
- * @param {AbstractComponent} component
- * @param {string} place
- */
 export const render = (container, component, place) => {
   switch (place) {
     case RenderPosition.BEFORE:
@@ -47,11 +36,6 @@ export const render = (container, component, place) => {
   }
 };
 
-/**
- * Replace components
- * @param {AbstractComponent} newComponent
- * @param {AbstractComponent} oldComponent
- */
 export const replace = (newComponent, oldComponent) => {
   const parentElement = oldComponent.getElement().parentElement;
   const newElement = newComponent.getElement();
@@ -64,10 +48,6 @@ export const replace = (newComponent, oldComponent) => {
   }
 };
 
-/**
- * Remove component with element
- * @param {AbstractComponent} component
- */
 export const remove = (component) => {
   component.getElement().remove();
   component.removeElement();

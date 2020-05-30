@@ -1,7 +1,4 @@
-// Import components
 import StatisticComponent from "../components/statistic";
-
-// Import constants and utils
 import {ClassName} from "../utils/render.js";
 import {RenderPosition, render, replace} from "../utils/render.js";
 import {getTotalDuration, getGenreFromWatched} from "../utils/movie.js";

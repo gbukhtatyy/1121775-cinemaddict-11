@@ -1,8 +1,6 @@
 import AbstractComponent from "../abstract-component.js";
-
 import CommentsListComponent from "./list.js";
 import CommentsFormComponent from "./form.js";
-
 import {createElement, render, RenderPosition} from "../../utils/render";
 
 const createCommentsMarkup = (countComments) => {

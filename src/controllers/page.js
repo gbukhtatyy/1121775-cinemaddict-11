@@ -1,21 +1,13 @@
-// Import components
 import MoviesComponent from "../components/movies.js";
 import LoadMoreButtonComponent from "../components/load-more-button.js";
-
-// Import controllers
 import MovieController from "../controllers/movie.js";
-
-// Import models
 import MovieModel from "../models/movie.js";
-
-// Import constants and utils
 import {AppState, AppPageTitle} from "../const.js";
 import {RenderPosition, ClassName, render, replace, remove} from "../utils/render.js";
 
 const SHOWING_FILMS_COUNT_ON_START = 5;
 const SHOWING_FILMS_COUNT_BY_BUTTON = 5;
 
-// Define render functions
 const renderMovies = (container, movies, onDataChange, onViewChange) => {
   return movies.map((movie) => {
     const movieController = new MovieController(container, onDataChange, onViewChange);
