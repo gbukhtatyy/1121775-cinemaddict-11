@@ -75,7 +75,7 @@ export default class Form extends AbstractComponent {
     if (!this._element) {
       this._element = createElement(this.getTemplate());
 
-      this._subscribeOnEvents();
+      this._subscribeHandlers();
     }
     return this._element;
   }
@@ -136,13 +136,13 @@ export default class Form extends AbstractComponent {
     document.addEventListener(`keyup`, this._keyUpHandler);
   }
 
-  removeSubmitFormHandler() {
+  removeSubmitHandler() {
     this._isCommentSending = false;
     document.removeEventListener(`keyup`, this._keyUpHandler);
     document.removeEventListener(`keydown`, this._submitGeneratedHandler);
   }
 
-  _subscribeOnEvents() {
+  _subscribeHandlers() {
     this._isCommentSending = false;
 
     const element = this.getElement();
