@@ -83,7 +83,7 @@ export default class Movie {
       replace(this._movieComponent, oldMovieComponent);
       replace(this._moviePopupComponent, oldMoviePopupComponent);
 
-      oldMoviePopupComponent.removeSubmitFormHandler();
+      oldMoviePopupComponent.removeSubmitHandler();
       this._moviePopupComponent.setSubmitFormHandler((newCommentData) => {
         this._onDataChange(this, null, newCommentData);
       });
@@ -120,7 +120,7 @@ export default class Movie {
     document.removeEventListener(`keydown`, this._onEscKeyDown);
     this._mode = Mode.DEFAULT;
 
-    this._moviePopupComponent.removeSubmitFormHandler();
+    this._moviePopupComponent.removeSubmitHandler();
   }
 
   _onEscKeyDown(evt) {

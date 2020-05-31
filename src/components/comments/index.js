@@ -45,7 +45,7 @@ export default class Comments extends AbstractComponent {
     this._commentsFormComponent.setSubmitHandler(handler);
   }
 
-  removeSubmitFormHandler() {
-    this._commentsFormComponent.removeSubmitFormHandler();
+  removeSubmitHandler() {
+    this._commentsFormComponent.removeSubmitHandler();
   }
 }

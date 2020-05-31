@@ -175,7 +175,7 @@ export default class MoviePopup extends AbstractComponent {
   setSubmitFormHandler(handler) {
     this._commentsComponent.setSubmitFormHandler(handler);
   }
-  removeSubmitFormHandler() {
-    this._commentsComponent.removeSubmitFormHandler();
+  removeSubmitHandler() {
+    this._commentsComponent.removeSubmitHandler();
   }
 }
