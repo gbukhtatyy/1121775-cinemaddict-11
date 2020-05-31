@@ -31,6 +31,33 @@ export default class Movie {
     this._movieComponent = new MovieComponent(movie);
     this._moviePopupComponent = new MoviePopupComponent(movie);
 
+    this._initMovieComponent(movie);
+    this._initMoviePopupComponent(movie);
+
+    if (oldMovieComponent && oldMoviePopupComponent) {
+      replace(this._movieComponent, oldMovieComponent);
+      replace(this._moviePopupComponent, oldMoviePopupComponent);
+
+      oldMoviePopupComponent.removeSubmitHandler();
+      this._moviePopupComponent.setSubmitFormHandler((newCommentData) => {
+        this._onDataChange(this, null, newCommentData);
+      });
+    } else {
+      render(container, this._movieComponent, RenderPosition.BEFOREEND);
+    }
+  }
+
+  setDefaultView() {
+    if (this._mode === Mode.POPUP) {
+      this._closeFilmPopup();
+    }
+  }
+
+  getMovie() {
+    return this._movie;
+  }
+
+  _initMovieComponent(movie) {
     this._movieComponent.setOpenClickHandler(() => {
       this._openFilmPopup();
     });
@@ -52,7 +79,9 @@ export default class Movie {
         isFavorite: !movie.isFavorite,
       }));
     });
+  }
 
+  _initMoviePopupComponent(movie) {
     this._moviePopupComponent.setClickCloseHandler(() => {
       this._closeFilmPopup();
     });
@@ -77,29 +106,6 @@ export default class Movie {
     this._moviePopupComponent.setDeleteCommentHandler((commentId) => {
       this._onDataChange(this, commentId, null);
     });
-
-
-    if (oldMovieComponent && oldMoviePopupComponent) {
-      replace(this._movieComponent, oldMovieComponent);
-      replace(this._moviePopupComponent, oldMoviePopupComponent);
-
-      oldMoviePopupComponent.removeSubmitHandler();
-      this._moviePopupComponent.setSubmitFormHandler((newCommentData) => {
-        this._onDataChange(this, null, newCommentData);
-      });
-    } else {
-      render(container, this._movieComponent, RenderPosition.BEFOREEND);
-    }
-  }
-
-  setDefaultView() {
-    if (this._mode === Mode.POPUP) {
-      this._closeFilmPopup();
-    }
-  }
-
-  getMovie() {
-    return this._movie;
   }
 
   _openFilmPopup() {
