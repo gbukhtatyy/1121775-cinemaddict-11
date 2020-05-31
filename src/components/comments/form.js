@@ -80,6 +80,19 @@ export default class Form extends AbstractComponent {
     return this._element;
   }
 
+  _ckeckButtonKeys(event) {
+    if (event.key === `Enter`) {
+      this._pressedButtons.enter = true;
+    } else if (event.key === `Control` || event.key === `Meta`) {
+      this._pressedButtons.ctrl = true;
+    }
+  }
+
+  _removeRequiredClasses(textareaElement, emojiLabelElement) {
+    textareaElement.classList.remove(ClassName.REQUIRED);
+    emojiLabelElement.classList.remove(ClassName.REQUIRED);
+  }
+
   _getSubmitHandler(handler) {
     const textareaElement = this.getElement().querySelector(`.film-details__comment-input`);
     const emojiLabelElement = this.getElement().querySelector(`.film-details__add-emoji-label`);
@@ -89,16 +102,11 @@ export default class Form extends AbstractComponent {
         return;
       }
 
-      if (event.key === `Enter`) {
-        this._pressedButtons.enter = true;
-      } else if (event.key === `Control` || event.key === `Meta`) {
-        this._pressedButtons.ctrl = true;
-      }
+      this._ckeckButtonKeys(event);
 
       if (this._pressedButtons.enter && this._pressedButtons.ctrl) {
         this._pressedButtons = {};
-        textareaElement.classList.remove(ClassName.REQUIRED);
-        emojiLabelElement.classList.remove(ClassName.REQUIRED);
+        this._removeRequiredClasses(textareaElement, emojiLabelElement);
 
         const value = textareaElement.value.trim();
 
@@ -115,8 +123,7 @@ export default class Form extends AbstractComponent {
           return;
         }
 
-        textareaElement.classList.remove(ClassName.REQUIRED);
-        emojiLabelElement.classList.remove(ClassName.REQUIRED);
+        this._removeRequiredClasses(textareaElement, emojiLabelElement);
 
         this._isCommentSending = true;
 
