@@ -60,16 +60,11 @@ export default class Form extends AbstractComponent {
   constructor() {
     super();
 
+    this._pressedButtons = {};
     this._isCommentSending = false;
     this._selectedEmoji = null;
 
-    this._textareaElement = null;
-
-    this._submitHandler = null;
     this._submitGeneratedHandler = null;
-
-    this._pressedButtons = {};
-
   }
 
   getTemplate() {
@@ -131,12 +126,10 @@ export default class Form extends AbstractComponent {
           date: new Date()
         });
       }
-
     };
   }
 
   setSubmitHandler(handler) {
-    this._submitHandler = handler;
     this._submitGeneratedHandler = this._getSubmitHandler(handler);
 
     document.addEventListener(`keydown`, this._submitGeneratedHandler);
