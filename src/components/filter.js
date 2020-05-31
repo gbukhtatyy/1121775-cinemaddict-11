@@ -21,9 +21,9 @@ const createFilterItemMarkup = (name, count, isChecked) => {
   );
 };
 
-const createFilterMarkup = (filters) => {
-  const filtersMarkup = filters.map((it) => createFilterItemMarkup(it.name, it.count, it.isChecked)).join(`\n`);
-  const statsActiveClass = filters.filter((it)=>it.isChecked).length === 0 ? FILTER_ACTIVE_CLASS : ``;
+const createFilterMarkup = (types) => {
+  const filtersMarkup = types.map((it) => createFilterItemMarkup(it.name, it.count, it.isChecked)).join(`\n`);
+  const statsActiveClass = types.filter((it)=>it.isChecked).length === 0 ? FILTER_ACTIVE_CLASS : ``;
 
   return (
     `<nav class="main-navigation">
@@ -36,24 +36,24 @@ const createFilterMarkup = (filters) => {
 };
 
 export default class Filter extends AbstractComponent {
-  constructor(filters) {
+  constructor(types) {
     super();
 
-    this._filters = filters;
+    this._types = types;
 
-    this._activeFilterType = null;
+    this._activeType = null;
     this._statisticClickHandler = null;
   }
 
   getTemplate() {
-    return createFilterMarkup(this._filters);
+    return createFilterMarkup(this._types);
   }
 
-  setFilterType(filterType) {
-    this._activeFilterType = filterType;
+  setType(newType) {
+    this._activeType = newType;
   }
 
-  setFilterChangeHandler(handler) {
+  setTypeChangeHandler(handler) {
     this.getElement().addEventListener(`click`, (evt) => {
       evt.preventDefault();
 
@@ -62,15 +62,15 @@ export default class Filter extends AbstractComponent {
       }
 
       const element = evt.target;
-      const filterType = element.dataset.filterType;
+      const newType = element.dataset.filterType;
 
-      if (this._activeFilterType === filterType) {
+      if (this._activeType === newType) {
         return;
       }
 
-      this._activeFilterType = filterType;
+      this._activeType = newType;
 
-      handler(filterType);
+      handler(newType);
     });
   }
 

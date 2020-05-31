@@ -47,7 +47,7 @@ export default class Statistic extends AbstractComponent {
   }
 
   setFilterType(filterType) {
-    this._filterComponent.setFilterType(filterType);
+    this._filterComponent.setType(filterType);
   }
 
   setFilterClickHandler(handler) {

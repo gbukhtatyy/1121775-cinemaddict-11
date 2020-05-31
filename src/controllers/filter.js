@@ -38,8 +38,8 @@ export default class FilterController {
 
     this._filterComponent = new FilterComponent(filters);
 
-    this._filterComponent.setFilterType(this._activeFilterType);
-    this._filterComponent.setFilterChangeHandler(this._onFilterTypeSet);
+    this._filterComponent.setType(this._activeFilterType);
+    this._filterComponent.setTypeChangeHandler(this._onFilterTypeSet);
 
     this._filterComponent.setFilterItemClickHandler(this._filterItemClickHandler);
     this._filterComponent.setStatisticClickHandler(this._statisticClickHandler);

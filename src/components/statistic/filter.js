@@ -48,15 +48,15 @@ export default class StatisticFilter extends AbstractComponent {
   constructor() {
     super();
 
-    this._activeFilterType = StatisticFilterType.ALL_TIME;
+    this._activeType = StatisticFilterType.ALL_TIME;
   }
 
   getTemplate() {
-    return createStatisticFilterMarkup(this._activeFilterType);
+    return createStatisticFilterMarkup(this._activeType);
   }
 
-  setFilterType(filterType) {
-    this._activeFilterType = filterType;
+  setType(filterType) {
+    this._activeType = filterType;
   }
 
   setClickHandler(handler) {
@@ -66,9 +66,9 @@ export default class StatisticFilter extends AbstractComponent {
 
         const filterType = element.value;
 
-        this._activeFilterType = filterType;
+        this._activeType = filterType;
 
-        handler(this._activeFilterType);
+        handler(this._activeType);
       });
     });
   }
