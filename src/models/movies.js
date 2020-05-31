@@ -1,6 +1,11 @@
 import {getMoviesByFilter} from "../utils/filter.js";
 import {FilterType, SortType, StatisticFilterType} from "../const.js";
 
+const DATE_ONE_DAY = 1;
+const DATE_ONE_WEEK = 7;
+const DATE_ONE_MONTH = 1;
+const DATE_ONE_YEAR = 1;
+
 export default class Movies {
   constructor(api) {
     this._movies = [];
@@ -56,16 +61,16 @@ export default class Movies {
 
     switch (period) {
       case StatisticFilterType.TODAY:
-        date.setDate(date.getDate() - 1);
+        date.setDate(date.getDate() - DATE_ONE_DAY);
         break;
       case StatisticFilterType.WEEK:
-        date.setDate(date.getDate() - 7);
+        date.setDate(date.getDate() - DATE_ONE_WEEK);
         break;
       case StatisticFilterType.MONTH:
-        date.setMonth(date.getMonth() - 1);
+        date.setMonth(date.getMonth() - DATE_ONE_MONTH);
         break;
       case StatisticFilterType.YEAR:
-        date.setFullYear(date.getFullYear() - 1);
+        date.setFullYear(date.getFullYear() - DATE_ONE_YEAR);
         break;
       default:
         return movies;
