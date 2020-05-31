@@ -23,9 +23,9 @@ export default class Sort extends AbstractComponent {
   constructor() {
     super();
 
-    this._activeSortType = SortType.DEFAULT;
+    this._activeType = SortType.DEFAULT;
 
-    this._sortTypes = [
+    this._types = [
       SortType.DEFAULT,
       SortType.DATE,
       SortType.RATING
@@ -33,14 +33,14 @@ export default class Sort extends AbstractComponent {
   }
 
   getTemplate() {
-    return createSortMarkup(this._sortTypes, this._activeSortType);
+    return createSortMarkup(this._types, this._activeType);
   }
 
-  setSortType(sortType) {
-    this._activeSortType = sortType;
+  setType(newType) {
+    this._activeType = newType;
   }
 
-  setSortTypeChangeHandler(handler) {
+  setTypeChangeHandler(handler) {
     this.getElement().addEventListener(`click`, (evt) => {
       evt.preventDefault();
 
@@ -49,15 +49,15 @@ export default class Sort extends AbstractComponent {
       }
 
       const element = evt.target;
-      const sortType = element.dataset.sortType;
+      const newType = element.dataset.sortType;
 
-      if (this._activeSortType === sortType) {
+      if (this._activeType === newType) {
         return;
       }
 
-      this._activeSortType = sortType;
+      this._activeType = newType;
 
-      handler(this._activeSortType);
+      handler(this._activeType);
     });
   }
 }

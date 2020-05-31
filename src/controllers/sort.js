@@ -22,8 +22,8 @@ export default class SortController {
     const oldComponent = this._sortComponent;
     this._sortComponent = new SortComponent();
 
-    this._sortComponent.setSortType(this._activeSort);
-    this._sortComponent.setSortTypeChangeHandler(this._onSortTypeSet);
+    this._sortComponent.setType(this._activeSort);
+    this._sortComponent.setTypeChangeHandler(this._onSortTypeSet);
 
     if (oldComponent) {
       replace(this._sortComponent, oldComponent);
