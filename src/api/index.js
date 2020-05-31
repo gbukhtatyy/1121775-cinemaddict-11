@@ -48,7 +48,7 @@ export default class Api {
 
         return Promise.all(commentsPromises);
       })
-      .then(Movie.parseMovies);
+      .then(Movie.parseArray);
   }
 
   addComment(movieId, commentData) {
@@ -61,7 +61,7 @@ export default class Api {
         newMovie[`comments`] = movieJson.comments.map((it)=>it.id);
         return newMovie;
       })
-      .then(Movie.parseMovie);
+      .then(Movie.parseOne);
   }
 
   deleteComment(commentId) {
