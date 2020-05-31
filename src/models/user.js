@@ -1,3 +1,9 @@
+const MinimalWatchedMovies = {
+  BUFF: 20,
+  FAN: 10,
+  NOVICE: 0
+};
+
 export default class User {
   constructor(moviesModel) {
     this._moviesModel = moviesModel;
@@ -18,11 +24,11 @@ export default class User {
     const watchedMovies = this._moviesModel.getWatchedMovies().length;
 
     switch (true) {
-      case (watchedMovies > 20):
+      case (watchedMovies > MinimalWatchedMovies.BUFF):
         return `movie buff`;
-      case (watchedMovies > 10):
+      case (watchedMovies > MinimalWatchedMovies.FAN):
         return `fan`;
-      case (watchedMovies > 0):
+      case (watchedMovies > MinimalWatchedMovies.NOVICE):
         return `novice`;
     }
 
