@@ -28,7 +28,7 @@ export default class Profile extends AbstractComponent {
   updateRating() {
     const profileRatingLabel = this.getElement().querySelector(`.profile__rating`);
 
-    profileRatingLabel.innerHTML = this._userModel.getUserStatus();
+    profileRatingLabel.innerHTML = this._userModel.getStatus();
   }
 
   _onDataChange() {

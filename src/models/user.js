@@ -7,14 +7,14 @@ export default class User {
       status: ``
     };
 
-    this._setUserStatus();
+    this._setStatus();
 
     this._onDataChange = this._onDataChange.bind(this);
 
     this._moviesModel.setDataChangeHandler(this._onDataChange);
   }
 
-  _calculateUserStatus() {
+  _calculateStatus() {
     const watchedMovies = this._moviesModel.getWatchedMovies().length;
 
     switch (true) {
@@ -29,15 +29,15 @@ export default class User {
     return ``;
   }
 
-  getUserStatus() {
+  getStatus() {
     return this._user.status;
   }
 
-  _setUserStatus() {
-    this._user.status = this._calculateUserStatus();
+  _setStatus() {
+    this._user.status = this._calculateStatus();
   }
 
   _onDataChange() {
-    this._setUserStatus();
+    this._setStatus();
   }
 }

@@ -66,7 +66,7 @@ export default class Statistic {
   }
 
   _getUserData() {
-    const userStatus = this._userModel.getUserStatus();
+    const userStatus = this._userModel.getStatus();
 
     const watched = this._moviesModel.getWatchedMovies();
     const watchedByPeriod = this._moviesModel.getMoviesByPeriod(watched, this._activeFilterType);
