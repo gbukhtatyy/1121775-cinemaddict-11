@@ -27,7 +27,7 @@ export default class Movies extends AbstractComponent {
     return createPageTemplate(this._title, this._isTitleVisible);
   }
 
-  getMoviesListElement() {
+  getListElement() {
     return this.getElement().querySelector(`.films-list__container`);
   }
 

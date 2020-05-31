@@ -90,7 +90,7 @@ export default class Page {
   }
 
   _renderFilms(movies) {
-    const moviesContainer = this._moviesComponent.getMoviesListElement();
+    const moviesContainer = this._moviesComponent.getListElement();
     const newMovies = renderMovies(moviesContainer, movies, this._onDataChange, this._onViewChange);
     this._showedMovieControllers = this._showedMovieControllers.concat(newMovies);
   }
@@ -124,7 +124,7 @@ export default class Page {
       return;
     }
 
-    const container = this._moviesComponent.getMoviesListElement();
+    const container = this._moviesComponent.getListElement();
     render(container, this._loadMoreButtonComponent, RenderPosition.AFTEREND);
     this._loadMoreButtonComponent.setClickHandler(this._onLoadMoreButtonClick);
   }
